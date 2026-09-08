@@ -1,0 +1,991 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  color: #222;
+  line-height: 1.5;
+}
+
+header {
+  background: #1f2937;
+  color: white;
+  padding: 24px;
+  text-align: center;
+}
+
+header p {
+  opacity: 0.85;
+}
+
+header h1 {
+  color: white;
+  font-size: 2rem;
+  text-align: center;
+}
+
+.navegacion {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  background: #f3f4f6;
+  border-bottom: 1px solid #d1d5db;
+}
+
+.navegacion form {
+  margin: 0;
+}
+
+.navegacion input[type="hidden"] {
+  display: none;
+}
+
+.boton {
+  display: inline-block;
+  padding: 10px 16px;
+  border-radius: 6px;
+  background: #2563eb;
+  color: white;
+  text-decoration: none;
+  border: none;
+  font: inherit;
+  cursor: pointer;
+}
+
+.boton:hover {
+  background: #1d4ed8;
+}
+
+.boton-secundario {
+  background: #4b5563;
+}
+
+.boton-secundario:hover {
+  background: #374151;
+}
+
+.boton-registro {
+  display: block;
+  width: fit-content;
+  margin: 4px auto 0;
+  padding: 10px 24px;
+  background: #0f766e;
+  border: 1px solid #0f766e;
+  box-shadow: 0 2px 5px rgb(15 118 110 / 25%);
+  transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.boton-registro:hover {
+  background: #115e59;
+  box-shadow: 0 4px 8px rgb(15 118 110 / 30%);
+  transform: translateY(-1px);
+}
+
+.boton-cerrar {
+  background: #dc2626;
+}
+
+.boton-cerrar:hover {
+  background: #b91c1c;
+}
+
+main {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.acciones-login {
+  max-width: 560px;
+  margin: 0 auto;
+}
+
+.acciones-login .boton-registro {
+  width: 100%;
+  margin: 0;
+  text-align: center;
+}
+
+form label {
+  display: block;
+  margin-bottom: 4px;
+  font-weight: bold;
+}
+
+form input, form select, form button {
+  display: block;
+  margin-bottom: 16px;
+  padding: 8px;
+  width: 100%;
+}
+
+form button {
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  width: auto;
+}
+
+form button:hover {
+  background: #1d4ed8;
+}
+
+.exito {
+  background: #dcfce7;
+  color: #166534;
+  padding: 12px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+}
+
+.errores {
+  background: #fee2e2;
+  color: #991b1b;
+  padding: 12px 12px 12px 28px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+}
+
+p.errores {
+  padding: 12px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: left;
+}
+
+table th {
+  background: #1f2937;
+  color: white;
+}
+
+.formulario-cita {
+  max-width: 600px;
+  margin: 24px 0 36px;
+  padding: 20px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background: #f9fafb;
+}
+
+.formulario-cita .checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 4px 0 16px;
+  font-weight: normal;
+}
+
+.formulario-cita .checkbox input {
+  display: inline-block;
+  width: auto;
+  margin: 0;
+}
+
+.interruptor-repeticion {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 4px 0 18px;
+  color: #242b63;
+  cursor: pointer;
+}
+
+.interruptor-repeticion input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.interruptor {
+  position: relative;
+  flex: 0 0 42px;
+  width: 42px;
+  height: 24px;
+  border-radius: 12px;
+  background: #b8c5cf;
+  transition: background 0.2s ease;
+}
+
+.interruptor::after {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: white;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 25%);
+  content: '';
+  transition: transform 0.2s ease;
+}
+
+.interruptor-repeticion input:checked + .interruptor {
+  background: #0f6b8b;
+}
+
+.interruptor-repeticion input:checked + .interruptor::after {
+  transform: translateX(18px);
+}
+
+.interruptor-repeticion input:focus-visible + .interruptor {
+  outline: 2px solid rgb(15 107 139 / 35%);
+  outline-offset: 3px;
+}
+
+.interruptor-repeticion strong,
+.interruptor-repeticion small {
+  display: block;
+}
+
+.interruptor-repeticion small {
+  margin-top: 2px;
+  color: #6b7a89;
+  font-size: 0.8rem;
+  font-weight: normal;
+}
+
+.estado-repeticion {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 4px 0 18px;
+  padding: 12px 14px;
+  border: 1px solid #cbd8e1;
+  border-radius: 4px;
+  background: #f8fbfd;
+  color: #596579;
+}
+
+.estado-repeticion strong,
+.estado-repeticion small {
+  display: block;
+}
+
+.estado-repeticion strong {
+  color: #596579;
+}
+
+.estado-repeticion small {
+  margin-top: 2px;
+  font-size: 0.8rem;
+}
+
+.indicador-repeticion {
+  flex: 0 0 10px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #9aa8b5;
+}
+
+.estado-repeticion.activa {
+  border-color: #78aeca;
+  background: #eaf4f8;
+}
+
+.estado-repeticion.activa strong {
+  color: #0f6b8b;
+}
+
+.estado-repeticion.activa .indicador-repeticion {
+  background: #0f6b8b;
+  box-shadow: 0 0 0 4px rgb(15 107 139 / 14%);
+}
+
+.tabla-contenedor {
+  overflow-x: auto;
+}
+
+.acciones {
+  white-space: nowrap;
+}
+
+.acciones form {
+  display: inline-block;
+  margin: 0 4px 0 0;
+}
+
+.acciones button {
+  width: auto;
+  margin: 0;
+  padding: 7px 10px;
+  font-size: 0.9rem;
+}
+
+.cita-terminada {
+  color: #6b7280;
+  text-decoration: line-through;
+}
+
+.cita-terminada .acciones {
+  text-decoration: none;
+}
+
+.pagina-agenda {
+  background: #f6f8fb;
+  color: #24284f;
+  font-family: Arial, sans-serif;
+}
+
+.pagina-agenda header {
+  background: #242b63;
+  padding: 24px 32px;
+  text-align: left;
+}
+
+.encabezado-agenda {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  max-width: 1080px;
+  margin: 0 auto;
+}
+
+.pagina-agenda header h1,
+.pagina-agenda main h2 {
+  font-family: Georgia, 'Times New Roman', serif;
+}
+
+.pagina-agenda header h1 {
+  max-width: 1080px;
+  margin: 0 auto;
+  font-size: 2.2rem;
+  letter-spacing: 0.02em;
+}
+
+.pagina-agenda header p {
+  max-width: 1080px;
+  margin: 4px auto 0;
+  color: #dce7f1;
+}
+
+.icono-calendario {
+  display: flex;
+  flex-direction: column;
+  width: 64px;
+  min-width: 64px;
+  overflow: hidden;
+  border: 2px solid white;
+  border-radius: 4px;
+  background: white;
+  color: #242b63;
+  text-align: center;
+  box-shadow: 0 3px 8px rgb(0 0 0 / 18%);
+}
+
+.icono-calendario-mes {
+  padding: 2px 4px;
+  background: #0f6b8b;
+  color: white;
+  font-size: 0.7rem;
+  font-weight: bold;
+  letter-spacing: 0.08em;
+}
+
+.icono-calendario-dia {
+  padding: 2px 4px 4px;
+  font-size: 1.8rem;
+  font-weight: bold;
+  line-height: 1.1;
+}
+
+.pagina-agenda .navegacion {
+  justify-content: flex-end;
+  padding: 10px max(20px, calc((100% - 1080px) / 2));
+  background: #0f6b8b;
+  border: 0;
+}
+
+.pagina-agenda .navegacion .boton {
+  display: inline-block;
+  width: auto;
+  margin: 0;
+  padding: 7px 14px;
+  border-radius: 3px;
+  background: transparent;
+  font-size: 0.9rem;
+}
+
+.pagina-agenda .navegacion .boton:hover {
+  background: rgb(255 255 255 / 14%);
+}
+
+.pagina-agenda main {
+  max-width: 1080px;
+  padding: 42px 24px 64px;
+}
+
+.pagina-agenda main h2 {
+  margin-bottom: 22px;
+  color: #242b63;
+  font-size: 2rem;
+}
+
+.encabezado-seccion {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 22px;
+}
+
+.encabezado-seccion h2 {
+  margin-bottom: 0;
+}
+
+.etiqueta-seccion {
+  margin-bottom: 5px;
+  color: #0f6b8b;
+  font-size: 0.72rem;
+  font-weight: bold;
+  letter-spacing: 0.12em;
+}
+
+.fecha-seleccionada {
+  margin-bottom: 4px;
+  color: #596579;
+  font-size: 0.95rem;
+  text-transform: capitalize;
+}
+
+.panel-calendario {
+  max-width: 520px;
+  margin-bottom: 32px;
+  padding: 22px 24px 18px;
+  border: 1px solid #d7e4eb;
+  border-radius: 4px;
+  background: white;
+  box-shadow: 0 5px 18px rgb(36 43 99 / 8%);
+}
+
+.cabecera-calendario {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.cabecera-calendario h3 {
+  color: #242b63;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1.4rem;
+  text-transform: capitalize;
+}
+
+.controles-calendario {
+  display: flex;
+  gap: 6px;
+}
+
+.boton-calendario {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  margin: 0;
+  padding: 0;
+  place-items: center;
+  border: 1px solid #bdd3df;
+  border-radius: 3px;
+  background: #f8fbfd;
+  color: #0f6b8b;
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.boton-calendario:hover {
+  background: #eaf4f8;
+}
+
+.dias-semana,
+.rejilla-calendario {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+  text-align: center;
+}
+
+.dias-semana {
+  margin-bottom: 6px;
+  color: #8291a3;
+  font-size: 0.68rem;
+  font-weight: bold;
+}
+
+.dia-calendario {
+  position: relative;
+  display: grid;
+  width: 100%;
+  min-height: 38px;
+  margin: 0;
+  padding: 0;
+  place-items: center;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  background: transparent;
+  color: #24284f;
+  font-size: 0.9rem;
+}
+
+.dia-calendario:hover {
+  border-color: #0f6b8b;
+  background: #eaf4f8;
+}
+
+.dia-calendario.hoy {
+  color: #0f6b8b;
+  font-weight: bold;
+}
+
+.dia-calendario.seleccionado {
+  border-color: #0f6b8b;
+  background: #0f6b8b;
+  color: white;
+}
+
+.dia-calendario.tiene-citas {
+  border-color: #78aeca;
+  background: #eaf4f8;
+  font-weight: bold;
+}
+
+.dia-calendario.seleccionado.tiene-citas {
+  border-color: #063f57;
+  background: #0f6b8b;
+  box-shadow: inset 0 0 0 2px #82d0e8;
+  color: white;
+}
+
+.marcadores-dia {
+  position: absolute;
+  right: 4px;
+  bottom: 4px;
+  left: 4px;
+  display: flex;
+  justify-content: center;
+  gap: 2px;
+}
+
+.marcador-dia {
+  width: 9px;
+  height: 4px;
+  border-radius: 2px;
+}
+
+.marcador-tarea {
+  display: inline-block;
+  width: 8px;
+  height: 24px;
+  margin-right: 9px;
+  vertical-align: middle;
+  border-radius: 2px;
+}
+
+.tarea-color-0 .marcador-tarea,
+.marcador-dia.color-0 { background: #1479a3; }
+.tarea-color-1 .marcador-tarea,
+.marcador-dia.color-1 { background: #386cb0; }
+.tarea-color-2 .marcador-tarea,
+.marcador-dia.color-2 { background: #168578; }
+.tarea-color-3 .marcador-tarea,
+.marcador-dia.color-3 { background: #7359a8; }
+.tarea-color-4 .marcador-tarea,
+.marcador-dia.color-4 { background: #b46b2d; }
+.tarea-color-5 .marcador-tarea,
+.marcador-dia.color-5 { background: #b14d65; }
+
+.cita-terminada .marcador-tarea {
+  opacity: 0.45;
+}
+
+.boton-hoy {
+  display: block;
+  margin: 16px auto 0;
+  padding: 5px 12px;
+  border: 0;
+  background: transparent;
+  color: #0f6b8b;
+  font-size: 0.82rem;
+  cursor: pointer;
+}
+
+.boton-hoy:hover {
+  text-decoration: underline;
+}
+
+.sin-citas-dia {
+  margin-top: 20px;
+  color: #6b7a89;
+}
+
+.selector-fechas {
+  margin: 0 0 14px;
+  padding: 14px;
+  border: 1px solid #cbd8e1;
+  border-radius: 4px;
+}
+
+.selector-fechas legend {
+  padding: 0 6px;
+  color: #242b63;
+  font-weight: bold;
+}
+
+.ayuda-selector {
+  margin-bottom: 12px;
+  color: #6b7a89;
+  font-size: 0.85rem;
+}
+
+.modos-fecha {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.modo-fecha {
+  position: relative;
+  min-height: 64px;
+  width: 100%;
+  margin: 0;
+  padding: 11px 12px;
+  border: 1px solid #bdd3df;
+  border-radius: 3px;
+  background: white;
+  color: #596579;
+  font-size: 0.92rem;
+  font-weight: 700;
+  line-height: 1.25;
+  text-align: left;
+  cursor: pointer;
+}
+
+.modo-fecha:hover,
+.modo-fecha.activo {
+  border-color: #0f6b8b;
+  background: #eaf4f8;
+  color: #0f6b8b;
+}
+
+.modo-fecha.activo {
+  background: #0f6b8b;
+  color: white;
+}
+
+.modo-fecha strong {
+  display: block;
+  margin-top: 3px;
+  overflow: hidden;
+  font-size: 0.82rem;
+  font-weight: normal;
+  line-height: 1.3;
+  text-overflow: ellipsis;
+  text-transform: capitalize;
+  white-space: nowrap;
+}
+
+.modo-fecha.activo strong {
+  color: white;
+  font-weight: 700;
+}
+
+.modo-fecha:hover::after,
+.modo-fecha:focus-visible::after {
+  position: absolute;
+  z-index: 5;
+  top: calc(100% + 8px);
+  left: 0;
+  width: min(260px, 90vw);
+  padding: 9px 11px;
+  border-radius: 3px;
+  background: #242b63;
+  color: white;
+  content: attr(data-ayuda);
+  font-size: 0.78rem;
+  font-weight: normal;
+  line-height: 1.35;
+  pointer-events: none;
+  text-align: left;
+  white-space: normal;
+  box-shadow: 0 4px 10px rgb(36 43 99 / 18%);
+}
+
+.modo-fecha:focus-visible {
+  outline: 2px solid #0f6b8b;
+  outline-offset: 2px;
+}
+
+.selector-horas {
+  margin-bottom: 18px;
+  border: 1px solid #cbd8e1;
+  border-radius: 4px;
+  background: white;
+}
+
+.selector-horas summary {
+  padding: 12px 14px;
+  color: #242b63;
+  font-weight: bold;
+  cursor: pointer;
+  list-style-position: inside;
+}
+
+.selector-horas[open] summary {
+  border-bottom: 1px solid #dbe8ee;
+  color: #0f6b8b;
+}
+
+.horas-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 14px;
+  padding: 14px;
+}
+
+.horas-grid label {
+  margin: 0;
+  color: #596579;
+  font-size: 0.85rem;
+}
+
+.horas-grid input {
+  width: 100%;
+  margin: 0;
+}
+
+.pagina-agenda .formulario-cita {
+  max-width: none;
+  margin: 0 0 32px;
+  padding: 24px;
+  border: 0;
+  border-top: 5px solid #0f6b8b;
+  border-radius: 4px;
+  background: #eaf4f8;
+  box-shadow: 0 5px 18px rgb(36 43 99 / 10%);
+}
+
+.pagina-agenda .formulario-cita label {
+  color: #242b63;
+}
+
+.pagina-agenda .formulario-cita input:not([type="checkbox"]) {
+  border: 1px solid #bdd3df;
+  border-radius: 3px;
+  background: white;
+}
+
+.pagina-agenda .formulario-cita input:focus {
+  outline: 2px solid rgb(15 107 139 / 28%);
+  border-color: #0f6b8b;
+}
+
+.pagina-agenda .formulario-cita button,
+.pagina-agenda .acciones button {
+  border-radius: 3px;
+  background: #0f6b8b;
+}
+
+.pagina-agenda .formulario-cita button:hover,
+.pagina-agenda .acciones button:hover {
+  background: #0b526b;
+}
+
+.pagina-agenda table {
+  margin-top: 0;
+  overflow: hidden;
+  border: 1px solid #d7e4eb;
+  border-radius: 4px;
+  background: white;
+  box-shadow: 0 5px 18px rgb(36 43 99 / 8%);
+}
+
+.pagina-agenda table th,
+.pagina-agenda table td {
+  border: 0;
+  border-bottom: 1px solid #dbe8ee;
+}
+
+.pagina-agenda table th {
+  background: #0f6b8b;
+  color: white;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1rem;
+}
+
+.pagina-agenda table tr:last-child td {
+  border-bottom: 0;
+}
+
+.pagina-agenda table td:first-child {
+  min-width: 190px;
+}
+
+.pagina-login,
+.pagina-registro {
+  min-height: 100vh;
+  background: #f6f8fb;
+  color: #24284f;
+}
+
+.pagina-login header,
+.pagina-registro header {
+  background: #242b63;
+  padding: 34px 24px;
+}
+
+.pagina-login header h1,
+.pagina-registro header h1 {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 2.25rem;
+  letter-spacing: 0.02em;
+}
+
+.pagina-login header p,
+.pagina-registro header p {
+  color: #dce7f1;
+}
+
+.pagina-login main,
+.pagina-registro main {
+  max-width: 560px;
+  margin: 48px auto;
+  padding: 32px;
+  border-top: 5px solid #0f6b8b;
+  border-radius: 4px;
+  background: white;
+  box-shadow: 0 8px 24px rgb(36 43 99 / 10%);
+}
+
+.pagina-login form input,
+.pagina-registro form input {
+  border: 1px solid #bdd3df;
+  border-radius: 3px;
+  background: #f8fbfd;
+}
+
+.pagina-login form input:focus,
+.pagina-registro form input:focus {
+  outline: 2px solid rgb(15 107 139 / 28%);
+  border-color: #0f6b8b;
+}
+
+.pagina-login form button,
+.pagina-registro form button {
+  background: #0f6b8b;
+  border-radius: 3px;
+}
+
+.pagina-login form button:hover,
+.pagina-registro form button:hover {
+  background: #0b526b;
+}
+
+.pagina-registro form {
+  margin: 0;
+}
+
+.pagina-registro .exito,
+.pagina-login .exito {
+  margin-bottom: 0;
+  border-left: 4px solid #0f6b8b;
+  border-radius: 3px;
+  background: #eaf4f8;
+  color: #174c63;
+}
+
+@media (max-width: 640px) {
+  .pagina-agenda header {
+    padding: 20px;
+  }
+
+  .encabezado-agenda {
+    gap: 16px;
+  }
+
+  .pagina-agenda header h1 {
+    font-size: 1.7rem;
+  }
+
+  .encabezado-seccion {
+    display: block;
+  }
+
+  .fecha-seleccionada {
+    margin-top: -12px;
+  }
+
+  .panel-calendario {
+    padding: 18px 14px 14px;
+  }
+
+  .cabecera-calendario h3 {
+    font-size: 1.2rem;
+  }
+
+  .dias-semana,
+  .rejilla-calendario {
+    gap: 3px;
+  }
+
+  .dia-calendario {
+    min-height: 34px;
+    font-size: 0.82rem;
+  }
+
+  .marcador-dia {
+    width: 7px;
+  }
+
+  .pagina-agenda .formulario-cita {
+    padding: 18px;
+  }
+
+  .modos-fecha,
+  .horas-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tabla-contenedor {
+    margin-right: -4px;
+    padding-bottom: 4px;
+  }
+
+  .pagina-agenda table {
+    min-width: 760px;
+  }
+
+  .pagina-login header h1,
+  .pagina-registro header h1 {
+    font-size: 1.7rem;
+  }
+
+  .pagina-login main,
+  .pagina-registro main {
+    margin: 24px 16px;
+    padding: 24px 20px;
+  }
+}
+
+a {
+  color: #2563eb;
+}
