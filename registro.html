@@ -7,8 +7,13 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body class="pagina-registro">
-  <div class="galeria-izq"><div class="foto"></div><div class="foto"></div><div class="foto"></div></div>
-  <div class="galeria-der"><div class="foto"></div><div class="foto"></div><div class="foto"></div></div>
+  <div class="corazones-flotantes">
+    <span class="corazon">❤</span><span class="corazon">💕</span><span class="corazon">💖</span>
+    <span class="corazon">💝</span><span class="corazon">💗</span><span class="corazon">❤</span>
+    <span class="corazon">💕</span><span class="corazon">💖</span>
+  </div>
+  <div class="galeria-izq"><div class="foto visible"></div><div class="foto"></div><div class="foto"></div></div>
+  <div class="galeria-der"><div class="foto visible"></div><div class="foto"></div><div class="foto"></div></div>
   <header>
     <h1>❤ AGENDA PERSONAL REGISTRO ❤</h1>
     <p>💕 Registro Cliente 💕</p>
@@ -43,6 +48,19 @@
   <script src="js/supabase-client.js"></script>
   <script src="js/auth.js"></script>
   <script>
+    function iniciarGaleria(selector) {
+      const fotos = document.querySelectorAll(selector + ' .foto');
+      if (fotos.length === 0) return;
+      let actual = 0;
+      setInterval(() => {
+        fotos[actual].classList.remove('visible');
+        actual = (actual + 1) % fotos.length;
+        fotos[actual].classList.add('visible');
+      }, 4000);
+    }
+    iniciarGaleria('.galeria-izq');
+    iniciarGaleria('.galeria-der');
+
     const form = document.getElementById('form-registro');
     const msgError = document.getElementById('msg-error');
 
@@ -57,12 +75,6 @@
 
         if (!nombre || !email || !movil || !password) {
             msgError.textContent = 'Todos los campos son obligatorios.';
-            msgError.hidden = false;
-            return;
-        }
-
-        if (email.includes(' ')) {
-            msgError.textContent = 'El email no puede contener espacios.';
             msgError.hidden = false;
             return;
         }

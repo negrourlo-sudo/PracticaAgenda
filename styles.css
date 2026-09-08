@@ -9,11 +9,8 @@ body {
   font-family: 'Georgia', serif;
   color: #fff;
   line-height: 1.6;
-  background: #1a0000;
-  background-image: linear-gradient(rgba(100, 0, 0, 0.75), rgba(100, 0, 0, 0.75)), url('imagenes/1.jpg');
+  background: url('imagenes/1.jpg') no-repeat center center fixed;
   background-size: cover;
-  background-attachment: fixed;
-  background-position: center;
 }
 
 header {
@@ -143,23 +140,26 @@ table th {
   border-radius: 4px;
 }
 
-/* Galería lateral - Panel izquierdo */
+/* Galería lateral */
 .galeria-izq,
 .galeria-der {
   position: fixed;
   top: 0;
-  width: 220px;
-  height: 100%;
-  z-index: -1;
+  width: 200px;
+  height: 100vh;
+  z-index: 2;
   overflow: hidden;
+  border: 2px solid rgba(204, 0, 0, 0.5);
 }
 
 .galeria-izq {
   left: 0;
+  border-left: none;
 }
 
 .galeria-der {
   right: 0;
+  border-right: none;
 }
 
 .galeria-izq .foto,
@@ -172,91 +172,69 @@ table th {
   background-size: cover;
   background-position: center;
   opacity: 0;
-  animation: fadeGaleria 18s infinite;
+  transition: opacity 1.5s ease-in-out;
 }
 
-/* Panel izquierdo - secuencia 2, 3, 4 */
-.galeria-izq .foto:nth-child(1) {
-  background-image: url('imagenes/2.jpg');
-  animation-delay: 0s;
-}
-.galeria-izq .foto:nth-child(2) {
-  background-image: url('imagenes/3.jpg');
-  animation-delay: 6s;
-}
-.galeria-izq .foto:nth-child(3) {
-  background-image: url('imagenes/4.jpg');
-  animation-delay: 12s;
+.galeria-izq .foto.visible,
+.galeria-der .foto.visible {
+  opacity: 0.85;
 }
 
-/* Panel derecho - secuencia 4, 2, 3 */
-.galeria-der .foto:nth-child(1) {
-  background-image: url('imagenes/4.jpg');
-  animation-delay: 0s;
-}
-.galeria-der .foto:nth-child(2) {
-  background-image: url('imagenes/2.jpg');
-  animation-delay: 6s;
-}
-.galeria-der .foto:nth-child(3) {
-  background-image: url('imagenes/3.jpg');
-  animation-delay: 12s;
-}
+.galeria-izq .foto:nth-child(1) { background-image: url('imagenes/2.jpg'); }
+.galeria-izq .foto:nth-child(2) { background-image: url('imagenes/3.jpg'); }
+.galeria-izq .foto:nth-child(3) { background-image: url('imagenes/4.jpg'); }
 
-@keyframes fadeGaleria {
-  0%, 28% { opacity: 0.6; }
-  33%, 61% { opacity: 0; }
-  66%, 94% { opacity: 0; }
-  100% { opacity: 0.6; }
-}
+.galeria-der .foto:nth-child(1) { background-image: url('imagenes/3.jpg'); }
+.galeria-der .foto:nth-child(2) { background-image: url('imagenes/4.jpg'); }
+.galeria-der .foto:nth-child(3) { background-image: url('imagenes/2.jpg'); }
 
-/* Quitar los pseudoelementos old */
+/* Quitar pseudoelementos antiguos */
 body::before,
-body::after {
-  display: none !important;
-}
-
-/* Corazones flotantes con CSS */
-@keyframes flotar {
-  0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-  10% { opacity: 0.7; }
-  90% { opacity: 0.7; }
-  100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
-}
-
+body::after,
 .pagina-agenda::before,
+.pagina-agenda::after,
 .pagina-login::before,
-.pagina-registro::before {
-  content: "❤ 💕 💖 💝 💗";
+.pagina-login::after,
+.pagina-registro::before,
+.pagina-registro::after {
+  display: none !important;
+  content: none !important;
+}
+
+/* Corazones flotantes */
+@keyframes flotar {
+  0% { transform: translateY(100vh); opacity: 0; }
+  10% { opacity: 0.5; }
+  90% { opacity: 0.5; }
+  100% { transform: translateY(-10vh); opacity: 0; }
+}
+
+.corazones-flotantes {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  font-size: 1.5rem;
-  letter-spacing: 30px;
-  color: rgba(255, 77, 77, 0.15);
   pointer-events: none;
-  z-index: -1;
-  animation: flotar 20s linear infinite;
+  z-index: 0;
+  overflow: hidden;
 }
 
-.pagina-agenda::after,
-.pagina-login::after,
-.pagina-registro::after {
-  content: "❤ 💕 💖 💝 💗";
-  position: fixed;
-  top: 0;
-  left: 50px;
-  width: 100%;
-  height: 100%;
-  font-size: 1.2rem;
-  letter-spacing: 40px;
-  color: rgba(255, 77, 77, 0.1);
-  pointer-events: none;
-  z-index: -1;
-  animation: flotar 25s linear infinite 5s;
+.corazon {
+  position: absolute;
+  bottom: -30px;
+  color: rgba(255, 77, 77, 0.35);
+  animation: flotar linear infinite;
 }
+
+.corazon:nth-child(1) { left: 8%; animation-duration: 16s; animation-delay: 0s; font-size: 1.2rem; }
+.corazon:nth-child(2) { left: 22%; animation-duration: 20s; animation-delay: 2s; font-size: 1.8rem; }
+.corazon:nth-child(3) { left: 40%; animation-duration: 18s; animation-delay: 5s; font-size: 1rem; }
+.corazon:nth-child(4) { left: 58%; animation-duration: 22s; animation-delay: 1s; font-size: 1.5rem; }
+.corazon:nth-child(5) { left: 75%; animation-duration: 17s; animation-delay: 7s; font-size: 1.3rem; }
+.corazon:nth-child(6) { left: 88%; animation-duration: 21s; animation-delay: 4s; font-size: 1.1rem; }
+.corazon:nth-child(7) { left: 35%; animation-duration: 19s; animation-delay: 9s; font-size: 1.6rem; }
+.corazon:nth-child(8) { left: 68%; animation-duration: 23s; animation-delay: 6s; font-size: 1.4rem; }
 
 /* Botones de acción en tabla */
 .acciones button {

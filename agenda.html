@@ -7,8 +7,13 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body class="pagina-agenda">
-    <div class="galeria-izq"><div class="foto"></div><div class="foto"></div><div class="foto"></div></div>
-    <div class="galeria-der"><div class="foto"></div><div class="foto"></div><div class="foto"></div></div>
+    <div class="corazones-flotantes">
+        <span class="corazon">❤</span><span class="corazon">💕</span><span class="corazon">💖</span>
+        <span class="corazon">💝</span><span class="corazon">💗</span><span class="corazon">❤</span>
+        <span class="corazon">💕</span><span class="corazon">💖</span>
+    </div>
+    <div class="galeria-izq"><div class="foto visible"></div><div class="foto"></div><div class="foto"></div></div>
+    <div class="galeria-der"><div class="foto visible"></div><div class="foto"></div><div class="foto"></div></div>
     <header>
         <div class="encabezado-agenda">
             <div>
@@ -159,6 +164,20 @@
         let fechaActiva = fechaHoy;
         let mesVisible = new Date(`${fechaHoy}T12:00:00`);
         let modoFecha = 'inicio';
+
+        // Galería lateral
+        function iniciarGaleria(selector) {
+            const fotos = document.querySelectorAll(selector + ' .foto');
+            if (fotos.length === 0) return;
+            let actual = 0;
+            setInterval(() => {
+                fotos[actual].classList.remove('visible');
+                actual = (actual + 1) % fotos.length;
+                fotos[actual].classList.add('visible');
+            }, 4000);
+        }
+        iniciarGaleria('.galeria-izq');
+        iniciarGaleria('.galeria-der');
 
         // Inicializar
         (async () => {

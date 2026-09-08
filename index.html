@@ -7,8 +7,13 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body class="pagina-login">
-  <div class="galeria-izq"><div class="foto"></div><div class="foto"></div><div class="foto"></div></div>
-  <div class="galeria-der"><div class="foto"></div><div class="foto"></div><div class="foto"></div></div>
+  <div class="corazones-flotantes">
+    <span class="corazon">❤</span><span class="corazon">💕</span><span class="corazon">💖</span>
+    <span class="corazon">💝</span><span class="corazon">💗</span><span class="corazon">❤</span>
+    <span class="corazon">💕</span><span class="corazon">💖</span>
+  </div>
+  <div class="galeria-izq"><div class="foto visible"></div><div class="foto"></div><div class="foto"></div></div>
+  <div class="galeria-der"><div class="foto visible"></div><div class="foto"></div><div class="foto"></div></div>
   <header>
     <h1>❤ AGENDA PERSONAL ACCESO ❤</h1>
     <p>💕 Acceso Cliente 💕</p>
@@ -38,11 +43,23 @@
   <script src="js/supabase-client.js"></script>
   <script src="js/auth.js"></script>
   <script>
+    function iniciarGaleria(selector) {
+      const fotos = document.querySelectorAll(selector + ' .foto');
+      if (fotos.length === 0) return;
+      let actual = 0;
+      setInterval(() => {
+        fotos[actual].classList.remove('visible');
+        actual = (actual + 1) % fotos.length;
+        fotos[actual].classList.add('visible');
+      }, 4000);
+    }
+    iniciarGaleria('.galeria-izq');
+    iniciarGaleria('.galeria-der');
+
     const form = document.getElementById('form-login');
     const msgError = document.getElementById('msg-error');
     const msgExito = document.getElementById('msg-exito');
 
-    // Si ya tiene sesión, redirigir a agenda
     getSesion().then(session => {
         if (session) window.location.href = 'agenda.html';
     });
