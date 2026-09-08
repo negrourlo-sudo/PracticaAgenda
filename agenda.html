@@ -121,6 +121,50 @@
         </div>
         <p class="sin-citas" id="sin-citas" hidden>No tienes citas guardadas.</p>
         <p class="sin-citas sin-citas-dia" id="sin-citas-dia" hidden>No hay tareas para este día.</p>
+
+        <!-- ============ SOLICITUDES RECIBIDAS ============ -->
+        <section class="panel-solicitudes" id="panel-solicitudes" hidden>
+            <div class="encabezado-seccion">
+                <div>
+                    <p class="etiqueta-seccion">MENSAJES</p>
+                    <h2>Solicitudes recibidas</h2>
+                </div>
+                <span class="contador-solicitudes" id="contador-solicitudes">0</span>
+            </div>
+            <div id="lista-solicitudes"></div>
+            <p class="sin-citas" id="sin-solicitudes" hidden>No tienes solicitudes pendientes.</p>
+        </section>
+
+        <!-- ============ TAREAS ACEPTADAS (participo) ============ -->
+        <section class="panel-compartidas" id="panel-compartidas" hidden>
+            <div class="encabezado-seccion">
+                <div>
+                    <p class="etiqueta-seccion">COMPARTIDO</p>
+                    <h2>Tareas donde participo</h2>
+                </div>
+            </div>
+            <div id="lista-compartidas-aceptadas"></div>
+            <p class="sin-citas" id="sin-compartidas" hidden>No estás en ninguna tarea compartida.</p>
+        </section>
+
+        <!-- ============ MODAL COMPARTIR TAREA ============ -->
+        <dialog id="modal-compartir" class="modal-compartir">
+            <div class="modal-contenido">
+                <div class="encabezado-seccion">
+                    <div>
+                        <p class="etiqueta-seccion">COMPARTIR</p>
+                        <h3 id="titulo-modal-compartir"></h3>
+                    </div>
+                    <button type="button" class="boton-cerrar" id="cerrar-modal-compartir">&times;</button>
+                </div>
+                <p class="ayuda-selector">Selecciona los usuarios con los que quieres compartir esta tarea:</p>
+                <div id="lista-usuarios-compartir" class="lista-usuarios-check"></div>
+                <div class="acciones-modal">
+                    <button type="button" class="boton" id="btn-confirmar-compartir">Compartir</button>
+                    <button type="button" class="boton-cerrar" id="btn-cancelar-compartir">Cancelar</button>
+                </div>
+            </div>
+        </dialog>
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -128,6 +172,7 @@
     <script src="js/supabase-client.js"></script>
     <script src="js/auth.js"></script>
     <script src="js/agenda.js"></script>
+    <script src="js/compartir.js"></script>
     <script>
         const fechaHoy = new Date().toISOString().slice(0, 10);
         let usuarioActual = null;
@@ -259,6 +304,7 @@
                     <td>${fechaFinFmt}</td>
                     <td>${cita.terminado ? 'Terminada' : 'Pendiente'}</td>
                     <td class="acciones">
+                        <button class="btn-compartir" data-id="${cita.id}" data-resumen="${escaparHtml(cita.resumen)}">Compartir</button>
                         <button class="btn-estado" data-id="${cita.id}">${cita.terminado ? 'Reabrir' : 'Terminar'}</button>
                         <button class="btn-eliminar boton-cerrar" data-id="${cita.id}">Eliminar</button>
                     </td>
@@ -470,6 +516,161 @@
             await logout();
             window.location.href = 'index.html';
         });
+
+        // ============================================
+        // SISTEMA DE TAREAS COMPARTIDAS
+        // ============================================
+
+        const modalCompartir = document.getElementById('modal-compartir');
+        const listaUsuariosCompartir = document.getElementById('lista-usuarios-compartir');
+        const tituloModalCompartir = document.getElementById('titulo-modal-compartir');
+        const listaSolicitudes = document.getElementById('lista-solicitudes');
+        const contadorSolicitudes = document.getElementById('contador-solicitudes');
+        const panelSolicitudes = document.getElementById('panel-solicitudes');
+        const sinSolicitudes = document.getElementById('sin-solicitudes');
+        const listaCompartidasAceptadas = document.getElementById('lista-compartidas-aceptadas');
+        const panelCompartidas = document.getElementById('panel-compartidas');
+        const sinCompartidas = document.getElementById('sin-compartidas');
+        let citaACompartir = null;
+
+        // Abrir modal compartir
+        bodyCitas.addEventListener('click', async (e) => {
+            if (e.target.classList.contains('btn-compartir')) {
+                const idCita = parseInt(e.target.dataset.id);
+                const resumen = e.target.dataset.resumen;
+                citaACompartir = idCita;
+                tituloModalCompartir.textContent = `Compartir: "${resumen}"`;
+                await cargarUsuariosParaCompartir();
+                modalCompartir.showModal();
+            }
+        });
+
+        // Cerrar modal
+        document.getElementById('cerrar-modal-compartir').addEventListener('click', () => modalCompartir.close());
+        document.getElementById('btn-cancelar-compartir').addEventListener('click', () => modalCompartir.close());
+        modalCompartir.addEventListener('click', (e) => {
+            if (e.target === modalCompartir) modalCompartir.close();
+        });
+
+        // Cargar usuarios en el modal
+        async function cargarUsuariosParaCompartir() {
+            const usuarios = await listarUsuarios(usuarioActual.id);
+            listaUsuariosCompartir.innerHTML = '';
+            if (usuarios.length === 0) {
+                listaUsuariosCompartir.innerHTML = '<p class="sin-citas">No hay otros usuarios registrados.</p>';
+                return;
+            }
+            usuarios.forEach(u => {
+                const label = document.createElement('label');
+                label.className = 'usuario-check';
+                label.innerHTML = `
+                    <input type="checkbox" value="${u.id}" data-nombre="${escaparHtml(u.nombre)}">
+                    <span class="check-nombre">${escaparHtml(u.nombre)}</span>
+                    <span class="check-email">${escaparHtml(u.email)}</span>
+                `;
+                listaUsuariosCompartir.appendChild(label);
+            });
+        }
+
+        // Confirmar compartir
+        document.getElementById('btn-confirmar-compartir').addEventListener('click', async () => {
+            const checkboxes = listaUsuariosCompartir.querySelectorAll('input[type="checkbox"]:checked');
+            if (checkboxes.length === 0) {
+                msgError.textContent = 'Selecciona al menos un usuario.';
+                msgError.hidden = false;
+                modalCompartir.close();
+                return;
+            }
+            const idsSeleccionados = Array.from(checkboxes).map(cb => parseInt(cb.value));
+            try {
+                await compartirCita(citaACompartir, usuarioActual.id, idsSeleccionados);
+                msgExito.textContent = `Tarea compartida con ${idsSeleccionados.length} usuario(s).`;
+                msgExito.hidden = false;
+                modalCompartir.close();
+            } catch (err) {
+                msgError.textContent = err.message || 'Error al compartir.';
+                msgError.hidden = false;
+            }
+        });
+
+        // Cargar solicitudes
+        async function cargarSolicitudes() {
+            const todas = await obtenerTodasSolicitudes(usuarioActual.id);
+            const pendientes = todas.filter(s => s.estado === 'pendiente');
+            const respondidas = todas.filter(s => s.estado !== 'pendiente');
+
+            // Panel de solicitudes (solo pendientes)
+            contadorSolicitudes.textContent = pendientes.length;
+            panelSolicitudes.hidden = false;
+            sinSolicitudes.hidden = pendientes.length > 0;
+
+            listaSolicitudes.innerHTML = '';
+            pendientes.forEach(s => {
+                const info = s.tareas_compartidas;
+                if (!info || !info.agenda) return;
+                const propietario = info.usuarios;
+                const div = document.createElement('div');
+                div.className = 'solicitud-item';
+                div.innerHTML = `
+                    <div class="solicitud-info">
+                        <p class="solicitud-tarea">${escaparHtml(info.agenda.resumen)}</p>
+                        <p class="solicitud-detalle">Te invita: <strong>${escaparHtml(propietario.nombre)}</strong></p>
+                        <p class="solicitud-fechas">${info.agenda.fecha_ini ? info.agenda.fecha_ini.slice(0,10) : ''} → ${info.agenda.fecha_fin ? info.agenda.fecha_fin.slice(0,10) : ''}</p>
+                        ${info.agenda.detalle_evento ? `<p class="solicitud-detalle-texto">${escaparHtml(info.agenda.detalle_evento)}</p>` : ''}
+                    </div>
+                    <div class="solicitud-acciones">
+                        <button class="boton btn-aceptar" data-id="${s.id}">Aceptar</button>
+                        <button class="boton-cerrar btn-rechazar" data-id="${s.id}">Rechazar</button>
+                    </div>
+                `;
+                listaSolicitudes.appendChild(div);
+            });
+        }
+
+        // Aceptar / rechazar solicitudes
+        listaSolicitudes.addEventListener('click', async (e) => {
+            if (e.target.classList.contains('btn-aceptar')) {
+                await responderSolicitud(parseInt(e.target.dataset.id), 'aceptada');
+                msgExito.textContent = 'Has aceptado la solicitud.';
+                msgExito.hidden = false;
+                await cargarSolicitudes();
+                await cargarTareasAceptadas();
+            }
+            if (e.target.classList.contains('btn-rechazar')) {
+                await responderSolicitud(parseInt(e.target.dataset.id), 'rechazada');
+                await cargarSolicitudes();
+            }
+        });
+
+        // Cargar tareas aceptadas (donde participo)
+        async function cargarTareasAceptadas() {
+            const aceptadas = await obtenerTareasAceptadas(usuarioActual.id);
+            panelCompartidas.hidden = false;
+            sinCompartidas.hidden = aceptadas.length > 0;
+            listaCompartidasAceptadas.innerHTML = '';
+
+            aceptadas.forEach(item => {
+                const info = item.tareas_compartidas;
+                if (!info || !info.agenda) return;
+                const propietario = info.usuarios;
+                const div = document.createElement('div');
+                div.className = 'compartida-item';
+                div.innerHTML = `
+                    <div class="compartida-info">
+                        <p class="compartida-tarea">${escaparHtml(info.agenda.resumen)}</p>
+                        <p class="compartida-propietario">Creada por: <strong>${escaparHtml(propietario.nombre)}</strong></p>
+                        <p class="compartida-fechas">${info.agenda.fecha_ini ? info.agenda.fecha_ini.slice(0,10) : ''} → ${info.agenda.fecha_fin ? info.agenda.fecha_fin.slice(0,10) : ''}</p>
+                    </div>
+                `;
+                listaCompartidasAceptadas.appendChild(div);
+            });
+        }
+
+        // Cargar todo al inicio
+        (async () => {
+            await cargarSolicitudes();
+            await cargarTareasAceptadas();
+        })();
     </script>
 </body>
 </html>
