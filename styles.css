@@ -404,10 +404,35 @@ body::after {
 }
 
 /* Marcadores de tarea */
+.marcadores-dia {
+  position: absolute;
+  right: 4px;
+  bottom: 4px;
+  left: 4px;
+  display: flex;
+  justify-content: center;
+  gap: 2px;
+}
+
+.marcador-dia {
+  width: 9px;
+  height: 4px;
+  border-radius: 2px;
+}
+
+.marcador-tarea {
+  display: inline-block;
+  width: 8px;
+  height: 24px;
+  margin-right: 9px;
+  vertical-align: middle;
+  border-radius: 2px;
+}
+
 .tarea-color-0 .marcador-tarea, .marcador-dia.color-0 { background: #cc0000; }
-.tarea-color-1 .marcador-tarea, .marcador-dia.color-1 { background: #990000; }
-.tarea-color-2 .marcador-tarea, .marcador-dia.color-2 { background: #ff4d4d; }
-.tarea-color-3 .marcador-tarea, .marcador-dia.color-3 { background: #b30000; }
+.tarea-color-1 .marcador-tarea, .marcador-dia.color-1 { background: #ff6680; }
+.tarea-color-2 .marcador-tarea, .marcador-dia.color-2 { background: #ff1a1a; }
+.tarea-color-3 .marcador-tarea, .marcador-dia.color-3 { background: #990000; }
 .tarea-color-4 .marcador-tarea, .marcador-dia.color-4 { background: #e60000; }
 .tarea-color-5 .marcador-tarea, .marcador-dia.color-5 { background: #cc3333; }
 

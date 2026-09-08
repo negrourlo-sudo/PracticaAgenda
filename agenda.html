@@ -11,7 +11,7 @@
         <div class="encabezado-agenda">
             <div>
                 <h1>❤ AGENDA PERSONAL ❤</h1>
-                <p id="nombre-usuario">Bienvenido...</p>
+                <p id="nombre-usuario">HOLA SUPERCALIENTE...</p>
             </div>
             <div class="icono-calendario" aria-label="Día actual" title="Día actual">
                 <span class="icono-calendario-mes">HOY</span>
@@ -166,7 +166,7 @@
             usuarioActual = await getUsuarioActual();
             if (!usuarioActual) { window.location.href = 'index.html'; return; }
 
-            nombreUsuario.textContent = `Bienvenido, ${usuarioActual.nombre}`;
+            nombreUsuario.textContent = `HOLA SUPERCALIENTE, ${usuarioActual.nombre}`;
             diaActual.textContent = new Date().getDate();
             await cargarCitas();
             seleccionarFecha(fechaHoy);
