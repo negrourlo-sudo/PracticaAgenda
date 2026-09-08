@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Agenda Personal</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="pagina-login">
+  <header>
+    <h1>AGENDA PERSONAL ACCESO</h1>
+    <p>Acceso Cliente</p>
+  </header>
+
+  <main>
+    <p id="msg-exito" class="exito" hidden></p>
+    <p id="msg-error" class="errores" hidden></p>
+
+    <div class="acciones-login">
+      <form id="form-login">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="password">Contraseña</label>
+        <input type="password" id="password" name="password" required>
+
+        <button type="submit">Entrar</button>
+      </form>
+
+      <a class="boton boton-registro" href="registro.html">Registrarse</a>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/config.js"></script>
+  <script src="js/supabase-client.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    const form = document.getElementById('form-login');
+    const msgError = document.getElementById('msg-error');
+    const msgExito = document.getElementById('msg-exito');
+
+    // Si ya tiene sesión, redirigir a agenda
+    getSesion().then(session => {
+        if (session) window.location.href = 'agenda.html';
+    });
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        msgError.hidden = true;
+        msgExito.hidden = true;
+
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+
+        try {
+            await login(email, password);
+            window.location.href = 'agenda.html';
+        } catch (err) {
+            msgError.textContent = err.message || 'Email o contraseña incorrectos.';
+            msgError.hidden = false;
+        }
+    });
+  </script>
+</body>
+</html>

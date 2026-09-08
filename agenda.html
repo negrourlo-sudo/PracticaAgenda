@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi agenda</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="pagina-agenda">
+    <header>
+        <div class="encabezado-agenda">
+            <div>
+                <h1>AGENDA PERSONAL</h1>
+                <p id="nombre-usuario">Bienvenido...</p>
+            </div>
+            <div class="icono-calendario" aria-label="Día actual" title="Día actual">
+                <span class="icono-calendario-mes">HOY</span>
+                <span class="icono-calendario-dia" id="dia-actual"></span>
+            </div>
+        </div>
+    </header>
+
+    <nav class="navegacion" aria-label="Navegación principal">
+        <a class="boton" href="agenda.html">Mi agenda</a>
+        <button class="boton boton-cerrar" id="btn-logout">Cerrar sesión</button>
+    </nav>
+
+    <main>
+        <div class="encabezado-seccion">
+            <div>
+                <p class="etiqueta-seccion">ORGANIZA TU TIEMPO</p>
+                <h2>Mis citas</h2>
+            </div>
+            <p id="fecha-seleccionada" class="fecha-seleccionada" aria-live="polite"></p>
+        </div>
+
+        <section class="panel-calendario" aria-labelledby="titulo-calendario">
+            <div class="cabecera-calendario">
+                <div>
+                    <p class="etiqueta-seccion">VISTA DIARIA</p>
+                    <h3 id="titulo-calendario"></h3>
+                </div>
+                <div class="controles-calendario">
+                    <button type="button" class="boton-calendario" id="mes-anterior" aria-label="Mes anterior">&#8249;</button>
+                    <button type="button" class="boton-calendario" id="mes-siguiente" aria-label="Mes siguiente">&#8250;</button>
+                </div>
+            </div>
+            <div class="dias-semana" aria-hidden="true">
+                <span>LUN</span><span>MAR</span><span>MIÉ</span><span>JUE</span><span>VIE</span><span>SÁB</span><span>DOM</span>
+            </div>
+            <div class="rejilla-calendario" id="rejilla-calendario" role="grid" aria-label="Calendario"></div>
+            <button type="button" class="boton-hoy" id="volver-hoy">Volver a hoy</button>
+        </section>
+
+        <p id="msg-exito" class="exito" hidden></p>
+        <p id="msg-error" class="errores" hidden></p>
+
+        <form id="formulario-cita" class="formulario-cita">
+            <label for="resumen">TAREA A INSCRIBIR</label>
+            <input type="text" id="resumen" name="resumen" maxlength="255" required>
+
+            <input type="hidden" id="fecha_ini" name="fecha_ini" required>
+            <input type="hidden" id="fecha_fin" name="fecha_fin" required>
+
+            <fieldset class="selector-fechas">
+                <legend>Elige los días de la tarea</legend>
+                <p class="ayuda-selector">Selecciona una fecha en el calendario para el inicio y otra para el fin.</p>
+                <div class="modos-fecha">
+                    <button type="button" class="modo-fecha activo" id="modo-inicio" data-ayuda="Pincha aquí en Inicio y elige el primer día en el calendario.">Inicio: <strong id="texto-fecha-inicio">Sin elegir</strong></button>
+                    <button type="button" class="modo-fecha" id="modo-fin" data-ayuda="Pincha aquí en Fin y elige el último día en el calendario.">Fin: <strong id="texto-fecha-fin">Sin elegir</strong></button>
+                </div>
+            </fieldset>
+
+            <details class="selector-horas">
+                <summary>Elegir horas</summary>
+                <div class="horas-grid">
+                    <label for="hora_inicio">Hora de inicio</label>
+                    <input type="time" id="hora_inicio" value="09:00" required>
+                    <label for="hora_fin">Hora de fin</label>
+                    <input type="time" id="hora_fin" value="10:00" required>
+                </div>
+            </details>
+
+            <label for="detalle_evento">Detalle del evento</label>
+            <input type="text" id="detalle_evento" name="detalle_evento" maxlength="255">
+
+            <label for="notas">Notas</label>
+            <input type="text" id="notas" name="notas" maxlength="255">
+
+            <div class="estado-repeticion" id="estado-repeticion" aria-live="polite">
+                <span class="indicador-repeticion" aria-hidden="true"></span>
+                <span>
+                    <strong id="titulo-repeticion">Cita de un día</strong>
+                    <small id="texto-repeticion">La tarea no se repetirá en otros días.</small>
+                </span>
+            </div>
+
+            <button type="submit">Guardar cita</button>
+        </form>
+
+        <div class="tabla-contenedor">
+            <table id="tabla-citas">
+                <thead>
+                    <tr>
+                        <th>Resumen</th>
+                        <th>Inicio</th>
+                        <th>Fin</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="body-citas"></tbody>
+            </table>
+        </div>
+        <p class="sin-citas" id="sin-citas" hidden>No tienes citas guardadas.</p>
+        <p class="sin-citas sin-citas-dia" id="sin-citas-dia" hidden>No hay tareas para este día.</p>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/config.js"></script>
+    <script src="js/supabase-client.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/agenda.js"></script>
+    <script>
+        const fechaHoy = new Date().toISOString().slice(0, 10);
+        let usuarioActual = null;
+        let todasLasCitas = [];
+        let diasConCitas = {};
+        let citasCalendario = {};
+
+        const diasSemana = ['DOM', 'LUN', 'MAR', 'MIÉ', 'JUE', 'VIE', 'SÁB'];
+        const meses = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+
+        // Elementos
+        const nombreUsuario = document.getElementById('nombre-usuario');
+        const diaActual = document.getElementById('dia-actual');
+        const tituloCalendario = document.getElementById('titulo-calendario');
+        const fechaSeleccionadaEl = document.getElementById('fecha-seleccionada');
+        const rejillaCalendario = document.getElementById('rejilla-calendario');
+        const sinCitas = document.getElementById('sin-citas');
+        const sinCitasDia = document.getElementById('sin-citas-dia');
+        const msgExito = document.getElementById('msg-exito');
+        const msgError = document.getElementById('msg-error');
+        const fechaInicio = document.getElementById('fecha_ini');
+        const fechaFin = document.getElementById('fecha_fin');
+        const horaInicio = document.getElementById('hora_inicio');
+        const horaFin = document.getElementById('hora_fin');
+        const modoInicio = document.getElementById('modo-inicio');
+        const modoFin = document.getElementById('modo-fin');
+        const textoFechaInicio = document.getElementById('texto-fecha-inicio');
+        const textoFechaFin = document.getElementById('texto-fecha-fin');
+        const tituloRepeticion = document.getElementById('titulo-repeticion');
+        const textoRepeticion = document.getElementById('texto-repeticion');
+        const estadoRepeticion = document.getElementById('estado-repeticion');
+        const bodyCitas = document.getElementById('body-citas');
+
+        let fechaActiva = fechaHoy;
+        let mesVisible = new Date(`${fechaHoy}T12:00:00`);
+        let modoFecha = 'inicio';
+
+        // Inicializar
+        (async () => {
+            const session = await getSesion();
+            if (!session) { window.location.href = 'index.html'; return; }
+
+            usuarioActual = await getUsuarioActual();
+            if (!usuarioActual) { window.location.href = 'index.html'; return; }
+
+            nombreUsuario.textContent = `Bienvenido, ${usuarioActual.nombre}`;
+            diaActual.textContent = new Date().getDate();
+            await cargarCitas();
+            seleccionarFecha(fechaHoy);
+        })();
+
+        // Cargar citas
+        async function cargarCitas() {
+            todasLasCitas = await getCitas(usuarioActual.id);
+            diasConCitas = {};
+            citasCalendario = {};
+
+            todasLasCitas.forEach(cita => {
+                const diaInicio = cita.fecha_ini.slice(0, 10);
+                const diaFin = cita.fecha_fin.slice(0, 10);
+                const dias = [diaInicio];
+
+                if (cita.se_repite) {
+                    const fecha = new Date(diaInicio + 'T12:00:00');
+                    const fechaFinal = new Date(diaFin + 'T12:00:00');
+                    while (fecha < fechaFinal) {
+                        fecha.setDate(fecha.getDate() + 1);
+                        dias.push(fecha.toISOString().slice(0, 10));
+                    }
+                }
+
+                dias.forEach(dia => {
+                    diasConCitas[dia] = true;
+                    if (!citasCalendario[dia]) citasCalendario[dia] = [];
+                    citasCalendario[dia].push({
+                        id: cita.id,
+                        resumen: cita.resumen,
+                        color: cita.id % 6
+                    });
+                });
+            });
+
+            renderizarTabla();
+            renderizarCalendario();
+        }
+
+        // Renderizar tabla
+        function renderizarTabla() {
+            bodyCitas.innerHTML = '';
+            let visibleCount = 0;
+
+            todasLasCitas.forEach(cita => {
+                const diaInicio = cita.fecha_ini.slice(0, 10);
+                const diaFin = cita.fecha_fin.slice(0, 10);
+                const perteneceAlDia = diaInicio === fechaActiva;
+                const esRepetida = cita.se_repite;
+                const estaDentroDelIntervalo = esRepetida && fechaActiva >= diaInicio && fechaActiva <= diaFin;
+                const visible = perteneceAlDia || estaDentroDelIntervalo;
+
+                if (visible) visibleCount++;
+
+                const tr = document.createElement('tr');
+                tr.className = `${cita.terminado ? 'cita-terminada' : ''} tarea-color-${cita.id % 6}`;
+                tr.hidden = !visible;
+                tr.dataset.fecha = diaInicio;
+                tr.dataset.fechaFin = diaFin;
+                tr.dataset.repetida = cita.se_repite ? '1' : '0';
+
+                const fechaIniFmt = formatearFechaCorta(cita.fecha_ini);
+                const fechaFinFmt = formatearFechaCorta(cita.fecha_fin);
+
+                tr.innerHTML = `
+                    <td><span class="marcador-tarea" aria-hidden="true"></span>${escaparHtml(cita.resumen)}</td>
+                    <td>${fechaIniFmt}</td>
+                    <td>${fechaFinFmt}</td>
+                    <td>${cita.terminado ? 'Terminada' : 'Pendiente'}</td>
+                    <td class="acciones">
+                        <button class="btn-estado" data-id="${cita.id}">${cita.terminado ? 'Reabrir' : 'Terminar'}</button>
+                        <button class="btn-eliminar boton-cerrar" data-id="${cita.id}">Eliminar</button>
+                    </td>
+                `;
+                bodyCitas.appendChild(tr);
+            });
+
+            sinCitas.hidden = todasLasCitas.length > 0;
+        }
+
+        // Eventos de la tabla (delegation)
+        bodyCitas.addEventListener('click', async (e) => {
+            if (e.target.classList.contains('btn-estado')) {
+                await cambiarEstadoCita(parseInt(e.target.dataset.id), usuarioActual.id);
+                await cargarCitas();
+                seleccionarFecha(fechaActiva);
+            }
+            if (e.target.classList.contains('btn-eliminar')) {
+                if (confirm('¿Eliminar esta cita?')) {
+                    await eliminarCita(parseInt(e.target.dataset.id), usuarioActual.id);
+                    await cargarCitas();
+                    seleccionarFecha(fechaActiva);
+                }
+            }
+        });
+
+        // Calendario
+        function formatearFecha(fecha) {
+            const d = new Date(fecha + 'T12:00:00');
+            return `${diasSemana[d.getDay()]} ${d.getDate()} de ${meses[d.getMonth()]} de ${d.getFullYear()}`;
+        }
+
+        function formatearFechaCorta(fechaYhora) {
+            const d = new Date(fechaYhora);
+            const dia = String(d.getDate()).padStart(2, '0');
+            const mes = String(d.getMonth() + 1).padStart(2, '0');
+            const anio = d.getFullYear();
+            const hora = String(d.getHours()).padStart(2, '0');
+            const min = String(d.getMinutes()).padStart(2, '0');
+            return `${dia}/${mes}/${anio} ${hora}:${min}`;
+        }
+
+        function escaparHtml(texto) {
+            const div = document.createElement('div');
+            div.textContent = texto;
+            return div.innerHTML;
+        }
+
+        function seleccionarFecha(fecha) {
+            fechaActiva = fecha;
+            mesVisible = new Date(`${fecha}T12:00:00`);
+            fechaSeleccionadaEl.textContent = formatearFecha(fecha);
+
+            // Filtrar filas de la tabla
+            const filas = bodyCitas.querySelectorAll('tr');
+            let visible = false;
+            filas.forEach(fila => {
+                const diaInicio = fila.dataset.fecha;
+                const diaFin = fila.dataset.fechaFin;
+                const esRepetida = fila.dataset.repetida === '1';
+                const perteneceAlDia = diaInicio === fecha;
+                const estaDentro = esRepetida && fecha >= diaInicio && fecha <= diaFin;
+                const mostrar = perteneceAlDia || estaDentro;
+                fila.hidden = !mostrar;
+                if (mostrar) visible = true;
+            });
+            sinCitasDia.hidden = visible;
+
+            actualizarEstadoRepeticion();
+            renderizarCalendario();
+        }
+
+        function renderizarCalendario() {
+            const anio = mesVisible.getFullYear();
+            const mes = mesVisible.getMonth();
+            const primerDia = new Date(anio, mes, 1);
+            const diasDelMes = new Date(anio, mes + 1, 0).getDate();
+            const desplazamiento = (primerDia.getDay() + 6) % 7;
+
+            tituloCalendario.textContent = `${meses[mes]} ${anio}`;
+            rejillaCalendario.innerHTML = '';
+
+            for (let i = 0; i < desplazamiento; i++) {
+                rejillaCalendario.append(document.createElement('span'));
+            }
+
+            for (let dia = 1; dia <= diasDelMes; dia++) {
+                const fecha = `${anio}-${String(mes + 1).padStart(2, '0')}-${String(dia).padStart(2, '0')}`;
+                const boton = document.createElement('button');
+                boton.type = 'button';
+                boton.className = 'dia-calendario';
+                boton.textContent = dia;
+                boton.dataset.fecha = fecha;
+                boton.setAttribute('aria-label', formatearFecha(fecha));
+                boton.setAttribute('aria-pressed', fecha === fechaActiva);
+                if (fecha === fechaActiva) boton.classList.add('seleccionado');
+                if (fecha === fechaHoy) boton.classList.add('hoy');
+                if (diasConCitas[fecha]) {
+                    boton.classList.add('tiene-citas');
+                    const marcadores = document.createElement('span');
+                    marcadores.className = 'marcadores-dia';
+                    (citasCalendario[fecha] || []).slice(0, 4).forEach(cita => {
+                        const marcador = document.createElement('span');
+                        marcador.className = `marcador-dia color-${cita.color}`;
+                        marcador.title = cita.resumen;
+                        marcadores.append(marcador);
+                    });
+                    boton.append(marcadores);
+                    boton.title = (citasCalendario[fecha] || []).map(c => c.resumen).join(', ');
+                }
+                boton.addEventListener('click', () => elegirFechaDesdeCalendario(fecha));
+                rejillaCalendario.append(boton);
+            }
+        }
+
+        function elegirFechaDesdeCalendario(fecha) {
+            actualizarFechaFormulario(modoFecha, fecha);
+            seleccionarFecha(fecha);
+            if (modoFecha === 'inicio') cambiarModoFecha('fin');
+        }
+
+        function cambiarModoFecha(modo) {
+            modoFecha = modo;
+            modoInicio.classList.toggle('activo', modo === 'inicio');
+            modoFin.classList.toggle('activo', modo === 'fin');
+        }
+
+        function actualizarFechaFormulario(tipo, fecha) {
+            const campo = tipo === 'inicio' ? fechaInicio : fechaFin;
+            const hora = tipo === 'inicio' ? horaInicio.value : horaFin.value;
+            campo.value = `${fecha}T${hora}`;
+            const texto = tipo === 'inicio' ? textoFechaInicio : textoFechaFin;
+            texto.textContent = formatearFecha(fecha);
+        }
+
+        function actualizarEstadoRepeticion() {
+            const inicio = fechaInicio.value.slice(0, 10);
+            const fin = fechaFin.value.slice(0, 10);
+            const esRepetida = inicio !== '' && fin !== '' && inicio !== fin;
+            tituloRepeticion.textContent = esRepetida ? 'Cita de varios días' : 'Cita de un día';
+            textoRepeticion.textContent = esRepetida
+                ? 'Se mostrará en cada día desde el inicio hasta el fin.'
+                : 'La tarea no se repetirá en otros días.';
+            estadoRepeticion.classList.toggle('activa', esRepetida);
+        }
+
+        // Controles del calendario
+        document.getElementById('mes-anterior').addEventListener('click', () => {
+            mesVisible.setMonth(mesVisible.getMonth() - 1);
+            renderizarCalendario();
+        });
+        document.getElementById('mes-siguiente').addEventListener('click', () => {
+            mesVisible.setMonth(mesVisible.getMonth() + 1);
+            renderizarCalendario();
+        });
+        document.getElementById('volver-hoy').addEventListener('click', () => {
+            mesVisible = new Date(`${fechaHoy}T12:00:00`);
+            seleccionarFecha(fechaHoy);
+        });
+        modoInicio.addEventListener('click', () => cambiarModoFecha('inicio'));
+        modoFin.addEventListener('click', () => cambiarModoFecha('fin'));
+        horaInicio.addEventListener('change', () => { if (fechaInicio.value) actualizarFechaFormulario('inicio', fechaInicio.value.slice(0, 10)); });
+        horaFin.addEventListener('change', () => { if (fechaFin.value) actualizarFechaFormulario('fin', fechaFin.value.slice(0, 10)); });
+
+        // Formulario crear cita
+        document.getElementById('formulario-cita').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            msgExito.hidden = true;
+            msgError.hidden = true;
+
+            const resumen = document.getElementById('resumen').value.trim();
+            const fIni = fechaInicio.value;
+            const fFin = fechaFin.value;
+            const detalle = document.getElementById('detalle_evento').value.trim();
+            const notas = document.getElementById('notas').value.trim();
+
+            if (!fIni || !fFin || !resumen) {
+                msgError.textContent = 'La fecha de inicio, la fecha de fin y el resumen son obligatorios.';
+                msgError.hidden = false;
+                return;
+            }
+
+            if (new Date(fFin) <= new Date(fIni)) {
+                msgError.textContent = 'La fecha de fin debe ser posterior a la fecha de inicio.';
+                msgError.hidden = false;
+                return;
+            }
+
+            try {
+                await crearCita(usuarioActual.id, fIni, fFin, resumen, detalle, notas);
+                msgExito.textContent = 'Cita creada correctamente.';
+                msgExito.hidden = false;
+                document.getElementById('formulario-cita').reset();
+                fechaInicio.value = '';
+                fechaFin.value = '';
+                textoFechaInicio.textContent = 'Sin elegir';
+                textoFechaFin.textContent = 'Sin elegir';
+                cambiarModoFecha('inicio');
+                await cargarCitas();
+                seleccionarFecha(fechaActiva);
+            } catch (err) {
+                msgError.textContent = err.message || 'Error al crear la cita.';
+                msgError.hidden = false;
+            }
+        });
+
+        // Logout
+        document.getElementById('btn-logout').addEventListener('click', async () => {
+            await logout();
+            window.location.href = 'index.html';
+        });
+    </script>
+</body>
+</html>

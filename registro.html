@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registro - Agenda Personal</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="pagina-registro">
+  <header>
+    <h1>AGENDA PERSONAL REGISTRO</h1>
+    <p>Registro Cliente</p>
+  </header>
+
+  <nav class="navegacion" aria-label="Navegación principal">
+    <a class="boton" href="index.html">Login</a>
+  </nav>
+
+  <main>
+    <p id="msg-error" class="errores" hidden></p>
+
+    <form id="form-registro">
+      <label for="nombre">Nombre</label>
+      <input type="text" id="nombre" name="nombre" required>
+
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" required>
+
+      <label for="movil">Móvil</label>
+      <input type="text" id="movil" name="movil" required>
+
+      <label for="password">Contraseña</label>
+      <input type="password" id="password" name="password" required minlength="6">
+
+      <button type="submit">Crear usuario</button>
+    </form>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/config.js"></script>
+  <script src="js/supabase-client.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    const form = document.getElementById('form-registro');
+    const msgError = document.getElementById('msg-error');
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        msgError.hidden = true;
+
+        const nombre = document.getElementById('nombre').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const movil = document.getElementById('movil').value.trim();
+        const password = document.getElementById('password').value;
+
+        if (!nombre || !email || !movil || !password) {
+            msgError.textContent = 'Todos los campos son obligatorios.';
+            msgError.hidden = false;
+            return;
+        }
+
+        if (email.includes(' ')) {
+            msgError.textContent = 'El email no puede contener espacios.';
+            msgError.hidden = false;
+            return;
+        }
+
+        try {
+            await registro(nombre, email, movil, password);
+            window.location.href = 'agenda.html';
+        } catch (err) {
+            msgError.textContent = err.message || 'Error al crear el usuario.';
+            msgError.hidden = false;
+        }
+    });
+  </script>
+</body>
+</html>
