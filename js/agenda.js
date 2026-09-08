@@ -1,6 +1,6 @@
 // CRUD de agenda
 async function getCitas(usuarioId) {
-    const { data, error } = await supabase
+    const { data, error } = await sb
         .from('agenda')
         .select('id, fecha_ini, fecha_fin, resumen, detalle_evento, terminado, se_repite, notas')
         .eq('id_user', usuarioId)
@@ -12,7 +12,7 @@ async function getCitas(usuarioId) {
 
 async function crearCita(usuarioId, fechaIni, fechaFin, resumen, detalle, notas) {
     const seRepite = fechaIni.slice(0, 10) !== fechaFin.slice(0, 10);
-    const { error } = await supabase
+    const { error } = await sb
         .from('agenda')
         .insert([{
             id_user: usuarioId,
@@ -30,7 +30,7 @@ async function crearCita(usuarioId, fechaIni, fechaFin, resumen, detalle, notas)
 
 async function cambiarEstadoCita(idCita, usuarioId) {
     // Obtener estado actual
-    const { data: cita } = await supabase
+    const { data: cita } = await sb
         .from('agenda')
         .select('terminado')
         .eq('id', idCita)
@@ -39,7 +39,7 @@ async function cambiarEstadoCita(idCita, usuarioId) {
 
     if (!cita) return;
 
-    const { error } = await supabase
+    const { error } = await sb
         .from('agenda')
         .update({ terminado: !cita.terminado })
         .eq('id', idCita)
@@ -48,7 +48,7 @@ async function cambiarEstadoCita(idCita, usuarioId) {
 }
 
 async function eliminarCita(idCita, usuarioId) {
-    const { error } = await supabase
+    const { error } = await sb
         .from('agenda')
         .update({ activo: false })
         .eq('id', idCita)
