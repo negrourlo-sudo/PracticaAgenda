@@ -1,81 +1,142 @@
-/* Estilos - Tema Rojo Pasión Elegante */
-* {
+/* ========================================
+   AGENDA PERSONAL - Tema Rojo Pasión
+   ======================================== */
+
+/* Reset */
+*, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
+/* Body */
 body {
   font-family: 'Georgia', serif;
   color: #fff;
   line-height: 1.6;
   background: url('imagenes/1.jpg') no-repeat center center fixed;
   background-size: cover;
+  min-height: 100vh;
 }
 
+/* ========================================
+   HEADER
+   ======================================== */
 header {
-  background: rgba(120, 0, 0, 0.45);
-  backdrop-filter: blur(6px);
+  background: rgba(100, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
   color: #fff;
-  padding: 30px 24px;
+  padding: 28px 24px;
   text-align: center;
-  border-bottom: 2px solid rgba(255, 77, 77, 0.4);
+  border-bottom: 2px solid rgba(255, 77, 77, 0.35);
 }
 
 header h1 {
-  font-size: 2.4rem;
+  font-size: 2.2rem;
   text-transform: uppercase;
   letter-spacing: 3px;
-  text-shadow: 1px 1px 6px rgba(0,0,0,0.6);
+  text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
 }
 
 header p {
   color: #ffb3b3;
   font-style: italic;
+  margin-top: 4px;
 }
 
+/* Encabezado agenda (flex) */
+.encabezado-agenda {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1080px;
+  margin: 0 auto;
+}
+
+/* ========================================
+   NAVEGACIÓN
+   ======================================== */
 .navegacion {
   display: flex;
   justify-content: center;
-  gap: 16px;
-  padding: 14px;
-  background: rgba(80, 0, 0, 0.35);
-  backdrop-filter: blur(4px);
-  border-bottom: 1px solid rgba(255, 77, 77, 0.3);
+  align-items: center;
+  gap: 14px;
+  padding: 12px 20px;
+  background: rgba(70, 0, 0, 0.3);
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid rgba(255, 77, 77, 0.25);
 }
 
+.navegacion form { margin: 0; }
+
+/* ========================================
+   BOTONES
+   ======================================== */
 .boton, button {
-  background: rgba(180, 0, 0, 0.5);
-  color: white;
-  border: 1px solid rgba(255, 100, 100, 0.5);
-  padding: 10px 20px;
-  border-radius: 6px;
+  display: inline-block;
+  background: rgba(170, 0, 0, 0.45);
+  color: #fff;
+  border: 1px solid rgba(255, 100, 100, 0.45);
+  padding: 9px 18px;
+  border-radius: 5px;
   text-transform: uppercase;
   font-weight: bold;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
   transition: all 0.3s ease;
   cursor: pointer;
-  backdrop-filter: blur(2px);
+  text-decoration: none;
+  text-align: center;
 }
 
 .boton:hover, button:hover {
-  background: rgba(220, 0, 0, 0.7);
-  box-shadow: 0 0 12px rgba(255, 26, 26, 0.4);
+  background: rgba(210, 0, 0, 0.65);
+  box-shadow: 0 0 14px rgba(255, 26, 26, 0.35);
+  transform: translateY(-1px);
 }
 
+.boton-cerrar {
+  background: rgba(140, 0, 0, 0.45) !important;
+  border-color: rgba(255, 80, 80, 0.45) !important;
+}
+
+.boton-cerrar:hover {
+  background: rgba(190, 0, 0, 0.65) !important;
+}
+
+.boton-registro {
+  display: block;
+  width: 100%;
+  text-align: center;
+  margin-top: 8px;
+  background: rgba(0, 100, 80, 0.45) !important;
+  border-color: rgba(0, 200, 160, 0.45) !important;
+  color: #b3ffe0 !important;
+}
+
+.boton-registro:hover {
+  background: rgba(0, 140, 100, 0.6) !important;
+}
+
+/* ========================================
+   MAIN
+   ======================================== */
 main {
   max-width: 900px;
-  margin: 30px auto;
-  padding: 30px;
-  background: rgba(60, 0, 0, 0.35);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 77, 77, 0.3);
+  margin: 28px auto;
+  padding: 28px;
+  background: rgba(50, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 77, 77, 0.25);
   border-radius: 10px;
 }
 
+/* ========================================
+   TIPOGRAFÍA
+   ======================================== */
 h2, h3 {
   color: #ff6b6b;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
   font-style: italic;
   text-shadow: 1px 1px 4px rgba(0,0,0,0.5);
 }
@@ -83,259 +144,452 @@ h2, h3 {
 h2::before { content: "❤ "; }
 h3::before { content: "♥ "; }
 
-.panel-calendario, .formulario-cita, table {
-  background: rgba(80, 0, 0, 0.3) !important;
-  backdrop-filter: blur(4px);
-  border: 1px solid rgba(255, 77, 77, 0.35) !important;
-  border-radius: 8px;
-  color: #ffe0e0;
+/* ========================================
+   ENCabezado sección
+   ======================================== */
+.encabezado-seccion {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
 }
 
-table th {
-  background: rgba(160, 0, 0, 0.55) !important;
-  color: #fff !important;
+.etiqueta-seccion {
+  margin-bottom: 4px;
+  color: #ff8080;
+  font-size: 0.7rem;
+  font-weight: bold;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  letter-spacing: 1px;
-  font-size: 0.85rem;
 }
 
-table td {
-  border-bottom-color: rgba(255, 77, 77, 0.15) !important;
-}
-
-.dia-calendario {
-  background: rgba(100, 0, 0, 0.25) !important;
-  border: 1px solid rgba(255, 77, 77, 0.25) !important;
-  color: #fff;
-}
-
-.dia-calendario:hover {
-  background: rgba(200, 0, 0, 0.45) !important;
-  border-color: rgba(255, 100, 100, 0.6) !important;
-}
-
-.dia-calendario.seleccionado {
-  background: rgba(200, 0, 0, 0.7) !important;
-  color: #fff !important;
-  box-shadow: 0 0 8px rgba(255, 26, 26, 0.5);
-}
-
-.dia-calendario.tiene-citas {
-  border-color: rgba(255, 100, 100, 0.6) !important;
-  background: rgba(180, 0, 0, 0.35) !important;
-}
-
-.dia-calendario.seleccionado.tiene-citas {
-  background: rgba(200, 0, 0, 0.75) !important;
-  box-shadow: inset 0 0 0 2px rgba(255, 150, 150, 0.5);
-}
-
-.formulario-cita button, .acciones button {
-  background: rgba(180, 0, 0, 0.55) !important;
-  border: 1px solid rgba(255, 100, 100, 0.5) !important;
-  border-radius: 5px;
-}
-
-.formulario-cita button:hover, .acciones button:hover {
-  background: rgba(220, 0, 0, 0.7) !important;
-  box-shadow: 0 0 10px rgba(255, 26, 26, 0.4);
-}
-
-.exito {
-  background: rgba(0, 80, 0, 0.5) !important;
-  color: #90ee90 !important;
-  border-left: 3px solid #00cc00;
-  border-radius: 4px;
-  backdrop-filter: blur(4px);
-}
-
-.errores {
-  background: rgba(140, 0, 0, 0.5) !important;
-  color: #ffb3b3 !important;
-  border-left: 3px solid #ff4d4d;
-  border-radius: 4px;
-  backdrop-filter: blur(4px);
-}
-
-/* Selector de fechas */
-.selector-fechas {
-  border-color: rgba(255, 77, 77, 0.35) !important;
-  background: rgba(60, 0, 0, 0.25) !important;
-}
-
-.modo-fecha {
-  background: rgba(60, 0, 0, 0.3) !important;
-  border-color: rgba(255, 77, 77, 0.3) !important;
+.fecha-seleccionada {
   color: #ffb3b3;
+  font-size: 0.9rem;
+  text-transform: capitalize;
 }
 
-.modo-fecha.activo {
-  background: rgba(180, 0, 0, 0.55) !important;
-  color: #fff !important;
-  border-color: rgba(255, 100, 100, 0.6) !important;
+/* ========================================
+   CALENDARIO
+   ======================================== */
+.panel-calendario {
+  max-width: 520px;
+  margin-bottom: 28px;
+  padding: 20px 22px 16px;
+  background: rgba(60, 0, 0, 0.25) !important;
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255, 77, 77, 0.25) !important;
+  border-radius: 8px;
 }
 
-.modo-fecha:hover {
-  border-color: rgba(255, 100, 100, 0.5) !important;
-  background: rgba(120, 0, 0, 0.4) !important;
+.cabecera-calendario {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
 }
 
-/* Calendario */
-.cabecera-calendario h3 { color: #ff6b6b; }
+.cabecera-calendario h3 {
+  color: #ff6b6b;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1.3rem;
+  text-transform: capitalize;
+  margin: 0;
+}
+
+.controles-calendario {
+  display: flex;
+  gap: 6px;
+}
 
 .boton-calendario {
-  border-color: rgba(255, 77, 77, 0.4) !important;
-  color: #ff6b6b !important;
+  display: grid;
+  width: 32px;
+  height: 32px;
+  margin: 0;
+  padding: 0;
+  place-items: center;
+  border: 1px solid rgba(255, 77, 77, 0.35) !important;
+  border-radius: 4px;
   background: rgba(40, 0, 0, 0.4) !important;
+  color: #ff6b6b !important;
+  font-size: 1.4rem;
+  line-height: 1;
 }
 
 .boton-calendario:hover {
-  background: rgba(180, 0, 0, 0.5) !important;
+  background: rgba(170, 0, 0, 0.5) !important;
   color: #fff !important;
 }
 
+/* Días de la semana */
 .dias-semana {
-  color: rgba(255, 180, 180, 0.7);
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+  margin-bottom: 5px;
+  text-align: center;
 }
 
-/* Formulario */
-.pagina-agenda .formulario-cita {
-  border-top: 3px solid rgba(255, 77, 77, 0.5) !important;
-  background: rgba(60, 0, 0, 0.35) !important;
+.dias-semana span {
+  color: #ff9999;
+  font-size: 0.72rem;
+  font-weight: bold;
+  letter-spacing: 0.05em;
+  padding: 4px 0;
 }
 
-.pagina-agenda .formulario-cita label {
-  color: #ffb3b3;
-  text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+/* Rejilla calendario */
+.rejilla-calendario {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+  text-align: center;
 }
 
-.pagina-agenda .formulario-cita input:not([type="checkbox"]) {
-  border: 1px solid rgba(255, 77, 77, 0.35);
-  background: rgba(40, 0, 0, 0.35);
-  color: #fff;
+.dia-calendario {
+  position: relative;
+  display: grid;
+  width: 100%;
+  min-height: 38px;
+  margin: 0;
+  padding: 0;
+  place-items: center;
+  border: 1px solid rgba(255, 77, 77, 0.2) !important;
   border-radius: 4px;
+  background: rgba(80, 0, 0, 0.2) !important;
+  color: #ffe0e0;
+  font-size: 0.88rem;
+  transition: all 0.2s ease;
 }
 
-.pagina-agenda .formulario-cita input:focus {
-  outline: 2px solid rgba(255, 77, 77, 0.3);
-  border-color: rgba(255, 77, 77, 0.5);
-}
-
-/* Navegación agenda */
-.pagina-agenda .navegacion {
-  background: rgba(80, 0, 0, 0.35);
-}
-
-/* Login y Registro */
-.pagina-login main,
-.pagina-registro main {
-  border-top: 3px solid rgba(255, 77, 77, 0.5);
-}
-
-.pagina-login form input,
-.pagina-registro form input {
-  border: 1px solid rgba(255, 77, 77, 0.35);
-  background: rgba(40, 0, 0, 0.35);
-  color: #fff;
-  border-radius: 4px;
-}
-
-.pagina-login form input:focus,
-.pagina-registro form input:focus {
-  outline: 2px solid rgba(255, 77, 77, 0.3);
-  border-color: rgba(255, 77, 77, 0.5);
-}
-
-.pagina-login form button,
-.pagina-registro form button {
-  background: rgba(180, 0, 0, 0.55);
-  border-color: rgba(255, 100, 100, 0.5);
-}
-
-.pagina-login form button:hover,
-.pagina-registro form button:hover {
-  background: rgba(220, 0, 0, 0.7);
-}
-
-/* Botón registro */
-.boton-registro {
-  background: rgba(140, 0, 0, 0.5) !important;
+.dia-calendario:hover {
+  background: rgba(180, 0, 0, 0.4) !important;
   border-color: rgba(255, 100, 100, 0.5) !important;
 }
 
-.boton-registro:hover {
-  background: rgba(180, 0, 0, 0.65) !important;
-}
-
-/* Selector horas */
-.selector-horas {
-  border-color: rgba(255, 77, 77, 0.35) !important;
-  background: rgba(40, 0, 0, 0.35);
-}
-
-.selector-horas summary {
-  color: #ffb3b3;
-}
-
-.selector-horas[open] summary {
+.dia-calendario.hoy {
   color: #ff6b6b;
-  border-bottom-color: rgba(255, 77, 77, 0.3);
+  font-weight: bold;
 }
 
-/* Estado repetición */
-.estado-repeticion {
-  border-color: rgba(255, 77, 77, 0.3) !important;
-  background: rgba(40, 0, 0, 0.3) !important;
-  color: #ffb3b3 !important;
+.dia-calendario.seleccionado {
+  background: rgba(190, 0, 0, 0.7) !important;
+  color: #fff !important;
+  box-shadow: 0 0 8px rgba(255, 26, 26, 0.4);
 }
 
-.estado-repeticion.activa {
-  border-color: rgba(255, 77, 77, 0.45) !important;
-  background: rgba(80, 0, 0, 0.4) !important;
+.dia-calendario.tiene-citas {
+  border-color: rgba(255, 100, 100, 0.5) !important;
+  background: rgba(160, 0, 0, 0.3) !important;
 }
 
-.estado-repeticion.activa strong { color: #ff6b6b !important; }
-
-.indicador-repeticion { background: rgba(180, 0, 0, 0.5); }
-
-.estado-repeticion.activa .indicador-repeticion {
-  background: rgba(220, 0, 0, 0.6);
-  box-shadow: 0 0 0 4px rgba(255, 77, 77, 0.15);
+.dia-calendario.seleccionado.tiene-citas {
+  background: rgba(190, 0, 0, 0.75) !important;
+  box-shadow: inset 0 0 0 2px rgba(255, 150, 150, 0.4);
 }
 
-/* Tabla */
-.pagina-agenda table { border-color: rgba(255, 77, 77, 0.3) !important; }
-.pagina-agenda table th { background: rgba(140, 0, 0, 0.55) !important; }
-
-/* Icono calendario */
-.icono-calendario { border-color: rgba(255, 100, 100, 0.5) !important; }
-.icono-calendario-mes { background: rgba(180, 0, 0, 0.6); }
-
-/* Botón hoy */
-.boton-hoy { color: #ff6b6b; }
-
-/* Marcadores de tarea */
+/* Marcadores día */
 .marcadores-dia {
   position: absolute;
-  right: 4px;
-  bottom: 4px;
-  left: 4px;
+  right: 3px;
+  bottom: 3px;
+  left: 3px;
   display: flex;
   justify-content: center;
   gap: 2px;
 }
 
 .marcador-dia {
-  width: 9px;
-  height: 4px;
+  width: 8px;
+  height: 3px;
   border-radius: 2px;
 }
 
+/* Botón volver hoy */
+.boton-hoy {
+  display: block;
+  margin: 12px auto 0;
+  padding: 4px 10px;
+  border: 0;
+  background: transparent;
+  color: #ff6b6b;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.boton-hoy:hover { text-decoration: underline; }
+
+/* ========================================
+   FORMULARIO CITA
+   ======================================== */
+.formulario-cita {
+  max-width: none;
+  margin: 0 0 28px;
+  padding: 22px;
+  background: rgba(50, 0, 0, 0.3) !important;
+  backdrop-filter: blur(6px);
+  border: 0 !important;
+  border-top: 3px solid rgba(255, 77, 77, 0.45) !important;
+  border-radius: 6px;
+}
+
+.formulario-cita label {
+  display: block;
+  margin-bottom: 4px;
+  color: #ffb3b3;
+  font-weight: bold;
+  font-size: 0.85rem;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+}
+
+.formulario-cita input:not([type="checkbox"]):not([type="hidden"]) {
+  display: block;
+  width: 100%;
+  margin-bottom: 14px;
+  padding: 9px 10px;
+  border: 1px solid rgba(255, 77, 77, 0.3);
+  border-radius: 4px;
+  background: rgba(30, 0, 0, 0.35);
+  color: #fff;
+  font-size: 0.9rem;
+}
+
+.formulario-cita input:focus {
+  outline: 2px solid rgba(255, 77, 77, 0.25);
+  border-color: rgba(255, 77, 77, 0.5);
+}
+
+.formulario-cita button[type="submit"] {
+  margin-top: 6px;
+}
+
+/* Selector fechas */
+.selector-fechas {
+  margin: 0 0 14px;
+  padding: 14px;
+  border: 1px solid rgba(255, 77, 77, 0.3) !important;
+  border-radius: 5px;
+  background: rgba(40, 0, 0, 0.25) !important;
+}
+
+.selector-fechas legend {
+  padding: 0 6px;
+  color: #ffb3b3;
+  font-weight: bold;
+}
+
+.ayuda-selector {
+  margin-bottom: 10px;
+  color: #cc8888;
+  font-size: 0.82rem;
+}
+
+.modos-fecha {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.modo-fecha {
+  position: relative;
+  min-height: 60px;
+  width: 100%;
+  margin: 0;
+  padding: 10px 12px;
+  border: 1px solid rgba(255, 77, 77, 0.3) !important;
+  border-radius: 4px;
+  background: rgba(50, 0, 0, 0.3) !important;
+  color: #ffb3b3;
+  font-size: 0.88rem;
+  font-weight: 700;
+  line-height: 1.25;
+  text-align: left;
+  cursor: pointer;
+}
+
+.modo-fecha:hover,
+.modo-fecha.activo {
+  border-color: rgba(255, 100, 100, 0.5) !important;
+}
+
+.modo-fecha.activo {
+  background: rgba(170, 0, 0, 0.55) !important;
+  color: #fff !important;
+}
+
+.modo-fecha strong {
+  display: block;
+  margin-top: 3px;
+  font-size: 0.8rem;
+  font-weight: normal;
+  text-transform: capitalize;
+  color: #ffb3b3;
+}
+
+.modo-fecha.activo strong { color: #fff; }
+
+/* Selector horas */
+.selector-horas {
+  margin-bottom: 16px;
+  border: 1px solid rgba(255, 77, 77, 0.3) !important;
+  border-radius: 5px;
+  background: rgba(40, 0, 0, 0.3) !important;
+}
+
+.selector-horas summary {
+  padding: 10px 12px;
+  color: #ffb3b3;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.selector-horas[open] summary {
+  color: #ff6b6b;
+  border-bottom: 1px solid rgba(255, 77, 77, 0.2);
+}
+
+.horas-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 14px;
+  padding: 12px;
+}
+
+.horas-grid label {
+  margin: 0;
+  color: #cc8888;
+  font-size: 0.82rem;
+}
+
+.horas-grid input {
+  width: 100%;
+  margin: 0;
+  padding: 6px;
+  border: 1px solid rgba(255, 77, 77, 0.3);
+  border-radius: 3px;
+  background: rgba(30, 0, 0, 0.35);
+  color: #fff;
+}
+
+/* Estado repetición */
+.estado-repeticion {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 4px 0 16px;
+  padding: 10px 12px;
+  border: 1px solid rgba(255, 77, 77, 0.25) !important;
+  border-radius: 4px;
+  background: rgba(40, 0, 0, 0.25) !important;
+  color: #ffb3b3 !important;
+}
+
+.estado-repeticion strong,
+.estado-repeticion small { display: block; }
+
+.estado-repeticion strong { color: #ffb3b3; }
+
+.estado-repeticion small {
+  margin-top: 2px;
+  font-size: 0.78rem;
+  color: #cc8888;
+}
+
+.indicador-repeticion {
+  flex: 0 0 10px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(170, 0, 0, 0.5);
+}
+
+.estado-repeticion.activa {
+  border-color: rgba(255, 77, 77, 0.4) !important;
+  background: rgba(70, 0, 0, 0.35) !important;
+}
+
+.estado-repeticion.activa strong { color: #ff6b6b !important; }
+
+.estado-repeticion.activa .indicador-repeticion {
+  background: rgba(220, 0, 0, 0.6);
+  box-shadow: 0 0 0 4px rgba(255, 77, 77, 0.12);
+}
+
+/* ========================================
+   TABLA CITAS
+   ======================================== */
+.tabla-contenedor {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: rgba(40, 0, 0, 0.25) !important;
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 77, 77, 0.25) !important;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+table th {
+  background: rgba(130, 0, 0, 0.5) !important;
+  color: #fff !important;
+  padding: 10px 12px;
+  text-align: left;
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid rgba(255, 77, 77, 0.1) !important;
+  color: #ffe0e0;
+  font-size: 0.88rem;
+}
+
+table tr:last-child td { border-bottom: 0; }
+
+.cita-terminada {
+  color: #aa7777 !important;
+  text-decoration: line-through;
+}
+
+.cita-terminada .acciones { text-decoration: none; }
+
+.acciones {
+  white-space: nowrap;
+}
+
+.acciones form {
+  display: inline-block;
+  margin: 0 3px 0 0;
+}
+
+.acciones button {
+  padding: 5px 9px !important;
+  font-size: 0.78rem !important;
+  margin: 0;
+}
+
+.sin-citas, .sin-citas-dia {
+  color: #cc8888;
+  text-align: center;
+  padding: 12px;
+  font-style: italic;
+}
+
+/* ========================================
+   MARCADORES COLORES
+   ======================================== */
 .marcador-tarea {
   display: inline-block;
-  width: 8px;
-  height: 24px;
-  margin-right: 9px;
+  width: 7px;
+  height: 22px;
+  margin-right: 8px;
   vertical-align: middle;
   border-radius: 2px;
 }
@@ -347,11 +601,137 @@ table td {
 .tarea-color-4 .marcador-tarea, .marcador-dia.color-4 { background: #e63939; }
 .tarea-color-5 .marcador-tarea, .marcador-dia.color-5 { background: #ff9999; }
 
-/* Galería lateral */
+.cita-terminada .marcador-tarea { opacity: 0.4; }
+
+/* ========================================
+   ICONO CALENDARIO (header)
+   ======================================== */
+.icono-calendario {
+  display: flex;
+  flex-direction: column;
+  width: 58px;
+  min-width: 58px;
+  overflow: hidden;
+  border: 2px solid rgba(255, 100, 100, 0.5);
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.9);
+  color: #800020;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.icono-calendario-mes {
+  padding: 2px 4px;
+  background: rgba(180, 0, 0, 0.7);
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: bold;
+  letter-spacing: 0.08em;
+}
+
+.icono-calendario-dia {
+  padding: 2px 4px 4px;
+  font-size: 1.6rem;
+  font-weight: bold;
+  line-height: 1.1;
+  color: #800020;
+}
+
+/* ========================================
+   LOGIN / REGISTRO
+   ======================================== */
+.pagina-login, .pagina-registro {
+  min-height: 100vh;
+}
+
+.pagina-login header, .pagina-registro header {
+  padding: 30px 24px;
+}
+
+.pagina-login main, .pagina-registro main {
+  max-width: 520px;
+  margin: 36px auto;
+  padding: 28px;
+  border-top: 3px solid rgba(255, 77, 77, 0.45);
+  background: rgba(40, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+}
+
+.acciones-login {
+  max-width: 100%;
+}
+
+.acciones-login .boton-registro {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.pagina-login form label,
+.pagina-registro form label {
+  display: block;
+  margin-bottom: 4px;
+  color: #ffb3b3;
+  font-weight: bold;
+  font-size: 0.88rem;
+}
+
+.pagina-login form input,
+.pagina-registro form input {
+  display: block;
+  width: 100%;
+  margin-bottom: 14px;
+  padding: 9px 10px;
+  border: 1px solid rgba(255, 77, 77, 0.3);
+  border-radius: 4px;
+  background: rgba(30, 0, 0, 0.35);
+  color: #fff;
+  font-size: 0.9rem;
+}
+
+.pagina-login form input:focus,
+.pagina-registro form input:focus {
+  outline: 2px solid rgba(255, 77, 77, 0.25);
+  border-color: rgba(255, 77, 77, 0.5);
+}
+
+.pagina-login form button,
+.pagina-registro form button {
+  width: 100%;
+  background: rgba(170, 0, 0, 0.5);
+  border-color: rgba(255, 100, 100, 0.5);
+}
+
+.pagina-login form button:hover,
+.pagina-registro form button:hover {
+  background: rgba(210, 0, 0, 0.65);
+}
+
+/* Mensajes */
+.exito {
+  background: rgba(0, 80, 0, 0.45) !important;
+  color: #90ee90 !important;
+  padding: 10px 14px;
+  border-left: 3px solid #00cc00;
+  border-radius: 4px;
+  margin-bottom: 16px;
+}
+
+.errores {
+  background: rgba(130, 0, 0, 0.45) !important;
+  color: #ffb3b3 !important;
+  padding: 10px 14px;
+  border-left: 3px solid #ff4d4d;
+  border-radius: 4px;
+  margin-bottom: 16px;
+}
+
+/* ========================================
+   GALERÍA LATERAL
+   ======================================== */
 .galeria-izq, .galeria-der {
   position: fixed;
   top: 0;
-  width: 180px;
+  width: 170px;
   height: 100vh;
   z-index: 2;
   overflow: hidden;
@@ -362,19 +742,16 @@ table td {
 
 .galeria-izq .foto, .galeria-der .foto {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
   background-size: cover;
   background-position: center;
   opacity: 0;
   transition: opacity 2s ease-in-out;
 }
 
-.galeria-izq .foto.visible, .galeria-der .foto.visible {
-  opacity: 0.8;
-}
+.galeria-izq .foto.visible,
+.galeria-der .foto.visible { opacity: 0.75; }
 
 .galeria-izq .foto:nth-child(1) { background-image: url('imagenes/2.jpg'); }
 .galeria-izq .foto:nth-child(2) { background-image: url('imagenes/3.jpg'); }
@@ -384,11 +761,13 @@ table td {
 .galeria-der .foto:nth-child(2) { background-image: url('imagenes/4.jpg'); }
 .galeria-der .foto:nth-child(3) { background-image: url('imagenes/2.jpg'); }
 
-/* Corazones flotantes */
+/* ========================================
+   CORAZONES FLOTANTES
+   ======================================== */
 @keyframes flotar {
   0% { transform: translateY(100vh); opacity: 0; }
-  10% { opacity: 0.4; }
-  90% { opacity: 0.4; }
+  10% { opacity: 0.35; }
+  90% { opacity: 0.35; }
   100% { transform: translateY(-10vh); opacity: 0; }
 }
 
@@ -404,36 +783,41 @@ table td {
 .corazon {
   position: absolute;
   bottom: -30px;
-  color: rgba(255, 100, 100, 0.25);
+  color: rgba(255, 100, 100, 0.2);
   animation: flotar linear infinite;
 }
 
-.corazon:nth-child(1) { left: 8%; animation-duration: 16s; animation-delay: 0s; font-size: 1.2rem; }
-.corazon:nth-child(2) { left: 22%; animation-duration: 20s; animation-delay: 2s; font-size: 1.8rem; }
-.corazon:nth-child(3) { left: 40%; animation-duration: 18s; animation-delay: 5s; font-size: 1rem; }
-.corazon:nth-child(4) { left: 58%; animation-duration: 22s; animation-delay: 1s; font-size: 1.5rem; }
-.corazon:nth-child(5) { left: 75%; animation-duration: 17s; animation-delay: 7s; font-size: 1.3rem; }
-.corazon:nth-child(6) { left: 88%; animation-duration: 21s; animation-delay: 4s; font-size: 1.1rem; }
-.corazon:nth-child(7) { left: 35%; animation-duration: 19s; animation-delay: 9s; font-size: 1.6rem; }
-.corazon:nth-child(8) { left: 68%; animation-duration: 23s; animation-delay: 6s; font-size: 1.4rem; }
+.corazon:nth-child(1) { left: 10%; animation-duration: 16s; animation-delay: 0s; font-size: 1.2rem; }
+.corazon:nth-child(2) { left: 25%; animation-duration: 20s; animation-delay: 2s; font-size: 1.7rem; }
+.corazon:nth-child(3) { left: 42%; animation-duration: 18s; animation-delay: 5s; font-size: 1rem; }
+.corazon:nth-child(4) { left: 60%; animation-duration: 22s; animation-delay: 1s; font-size: 1.4rem; }
+.corazon:nth-child(5) { left: 77%; animation-duration: 17s; animation-delay: 7s; font-size: 1.2rem; }
+.corazon:nth-child(6) { left: 90%; animation-duration: 21s; animation-delay: 4s; font-size: 1rem; }
+.corazon:nth-child(7) { left: 37%; animation-duration: 19s; animation-delay: 9s; font-size: 1.5rem; }
+.corazon:nth-child(8) { left: 70%; animation-duration: 23s; animation-delay: 6s; font-size: 1.3rem; }
 
-/* Acciones tabla */
-.acciones button {
-  padding: 6px 10px !important;
-  font-size: 0.82rem !important;
+/* ========================================
+   ENLACES
+   ======================================== */
+a { color: #ff6b6b; text-decoration: none; }
+a:hover { color: #ff9999; text-decoration: underline; }
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+@media (max-width: 768px) {
+  .galeria-izq, .galeria-der { width: 100px; }
+
+  main { margin: 16px 120px 16px 120px; padding: 18px; }
+
+  header h1 { font-size: 1.6rem; }
+
+  .encabezado-seccion { display: block; }
+
+  .modos-fecha, .horas-grid { grid-template-columns: 1fr; }
+
+  table { min-width: 600px; }
 }
-
-.acciones .boton-cerrar {
-  background: rgba(160, 0, 0, 0.5) !important;
-}
-
-.acciones .boton-cerrar:hover {
-  background: rgba(200, 0, 0, 0.65) !important;
-}
-
-/* Enlaces */
-a { color: #ff6b6b; }
-a:hover { color: #ff9999; }
 
 /* Quitar pseudoelementos antiguos */
 body::before, body::after,
