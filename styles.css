@@ -10,7 +10,7 @@ body {
   color: #fff;
   line-height: 1.6;
   background: #000;
-  background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1515377612760-73907a99ccbb?q=80&w=1920&auto=format&fit=crop');
+  background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('imagenes/1.jpg');
   background-size: cover;
   background-attachment: fixed;
   background-position: center;
@@ -97,7 +97,7 @@ body::before {
   left: 0;
   width: 250px;
   height: 100%;
-  background-image: url('https://images.unsplash.com/photo-1525507119028-ed4c629a60a3?q=80&w=600&auto=format&fit=crop');
+  background-image: url('imagenes/2.jpg');
   background-size: cover;
   opacity: 0.3;
   z-index: -1;
@@ -110,7 +110,7 @@ body::after {
   right: 0;
   width: 250px;
   height: 100%;
-  background-image: url('https://images.unsplash.com/photo-1516733725897-1aa73b87c8e8?q=80&w=600&auto=format&fit=crop');
+  background-image: url('imagenes/3.jpg');
   background-size: cover;
   opacity: 0.3;
   z-index: -1;
