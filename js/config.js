@@ -1,4 +1,3 @@
 // Configuración de Supabase
-// REEMPLAZA estos valores con los de tu proyecto Supabase
-const SUPABASE_URL = 'TU_SUPABASE_URL_AQUI';
-const SUPABASE_ANON_KEY = 'TU_SUPABASE_ANON_KEY_AQUI';
+const SUPABASE_URL = 'https://vgnxioxzwhunaktthimb.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZnbnhpb3h6d2h1bmFrdHRoaW1iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg4NTU3OTUsImV4cCI6MjEwNDQzMTc5NX0.rGQpKJpBzTHnGvcvkMFLk6fkFGoX0qRlVpZjllYhuCg';
