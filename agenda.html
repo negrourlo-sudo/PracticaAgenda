@@ -29,6 +29,17 @@
 
     <nav class="navegacion" aria-label="Navegación principal">
         <a class="boton" href="agenda.html">Mi agenda</a>
+        <div class="campana-contenedor" id="campana-contenedor">
+            <button class="campana-btn" id="campana-btn" title="Solicitudes recibidas">
+                🔔
+                <span class="campana-badge" id="campana-badge" hidden>0</span>
+            </button>
+            <div class="campana-dropdown" id="campana-dropdown" hidden>
+                <p class="campana-titulo">Solicitudes recibidas</p>
+                <div id="campana-lista"></div>
+                <p class="campana-vacia" id="campana-vacia">No hay solicitudes pendientes.</p>
+            </div>
+        </div>
         <button class="boton boton-cerrar" id="btn-logout">Cerrar sesión</button>
     </nav>
 
@@ -121,19 +132,6 @@
         </div>
         <p class="sin-citas" id="sin-citas" hidden>No tienes citas guardadas.</p>
         <p class="sin-citas sin-citas-dia" id="sin-citas-dia" hidden>No hay tareas para este día.</p>
-
-        <!-- ============ SOLICITUDES RECIBIDAS ============ -->
-        <section class="panel-solicitudes" id="panel-solicitudes" hidden>
-            <div class="encabezado-seccion">
-                <div>
-                    <p class="etiqueta-seccion">MENSAJES</p>
-                    <h2>Solicitudes recibidas</h2>
-                </div>
-                <span class="contador-solicitudes" id="contador-solicitudes">0</span>
-            </div>
-            <div id="lista-solicitudes"></div>
-            <p class="sin-citas" id="sin-solicitudes" hidden>No tienes solicitudes pendientes.</p>
-        </section>
 
         <!-- ============ TAREAS ACEPTADAS (participo) ============ -->
         <section class="panel-compartidas" id="panel-compartidas" hidden>
@@ -521,17 +519,36 @@
         // SISTEMA DE TAREAS COMPARTIDAS
         // ============================================
 
-        const modalCompartir = document.getElementById('modal-compartir');
-        const listaUsuariosCompartir = document.getElementById('lista-usuarios-compartir');
-        const tituloModalCompartir = document.getElementById('titulo-modal-compartir');
-        const listaSolicitudes = document.getElementById('lista-solicitudes');
-        const contadorSolicitudes = document.getElementById('contador-solicitudes');
-        const panelSolicitudes = document.getElementById('panel-solicitudes');
-        const sinSolicitudes = document.getElementById('sin-solicitudes');
+        const campanaBtn = document.getElementById('campana-btn');
+        const campanaDropdown = document.getElementById('campana-dropdown');
+        const campanaBadge = document.getElementById('campana-badge');
+        const campanaLista = document.getElementById('campana-lista');
+        const campanaVacia = document.getElementById('campana-vacia');
         const listaCompartidasAceptadas = document.getElementById('lista-compartidas-aceptadas');
         const panelCompartidas = document.getElementById('panel-compartidas');
         const sinCompartidas = document.getElementById('sin-compartidas');
+        const modalCompartir = document.getElementById('modal-compartir');
+        const listaUsuariosCompartir = document.getElementById('lista-usuarios-compartir');
+        const tituloModalCompartir = document.getElementById('titulo-modal-compartir');
         let citaACompartir = null;
+
+        // Abrir/cerrar dropdown de la campana
+        campanaBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const abierto = !campanaDropdown.hidden;
+            campanaDropdown.hidden = abierto;
+        });
+
+        // Cerrar dropdown al hacer clic fuera
+        document.addEventListener('click', (e) => {
+            if (!campanaDropdown.contains(e.target) && e.target !== campanaBtn) {
+                campanaDropdown.hidden = true;
+            }
+        });
+
+        campanaDropdown.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
 
         // Abrir modal compartir
         bodyCitas.addEventListener('click', async (e) => {
@@ -593,50 +610,47 @@
             }
         });
 
-        // Cargar solicitudes
+        // Cargar solicitudes en la campana
         async function cargarSolicitudes() {
             const todas = await obtenerTodasSolicitudes(usuarioActual.id);
             const pendientes = todas.filter(s => s.estado === 'pendiente');
-            const respondidas = todas.filter(s => s.estado !== 'pendiente');
 
-            // Panel de solicitudes (solo pendientes)
-            contadorSolicitudes.textContent = pendientes.length;
-            panelSolicitudes.hidden = false;
-            sinSolicitudes.hidden = pendientes.length > 0;
+            // Badge
+            campanaBadge.textContent = pendientes.length;
+            campanaBadge.hidden = pendientes.length === 0;
 
-            listaSolicitudes.innerHTML = '';
+            // Lista
+            campanaLista.innerHTML = '';
+            campanaVacia.hidden = pendientes.length > 0;
+
             pendientes.forEach(s => {
                 const info = s.tareas_compartidas;
                 if (!info || !info.agenda) return;
                 const propietario = info.usuarios;
                 const div = document.createElement('div');
-                div.className = 'solicitud-item';
+                div.className = 'campana-item';
                 div.innerHTML = `
-                    <div class="solicitud-info">
-                        <p class="solicitud-tarea">${escaparHtml(info.agenda.resumen)}</p>
-                        <p class="solicitud-detalle">Te invita: <strong>${escaparHtml(propietario.nombre)}</strong></p>
-                        <p class="solicitud-fechas">${info.agenda.fecha_ini ? info.agenda.fecha_ini.slice(0,10) : ''} → ${info.agenda.fecha_fin ? info.agenda.fecha_fin.slice(0,10) : ''}</p>
-                        ${info.agenda.detalle_evento ? `<p class="solicitud-detalle-texto">${escaparHtml(info.agenda.detalle_evento)}</p>` : ''}
-                    </div>
-                    <div class="solicitud-acciones">
-                        <button class="boton btn-aceptar" data-id="${s.id}">Aceptar</button>
-                        <button class="boton-cerrar btn-rechazar" data-id="${s.id}">Rechazar</button>
+                    <p class="campana-item-tarea">${escaparHtml(info.agenda.resumen)}</p>
+                    <p class="campana-item-info">De: ${escaparHtml(propietario.nombre)}</p>
+                    <div class="campana-item-acciones">
+                        <button class="campana-aceptar" data-id="${s.id}">Aceptar</button>
+                        <button class="campana-rechazar" data-id="${s.id}">Rechazar</button>
                     </div>
                 `;
-                listaSolicitudes.appendChild(div);
+                campanaLista.appendChild(div);
             });
         }
 
-        // Aceptar / rechazar solicitudes
-        listaSolicitudes.addEventListener('click', async (e) => {
-            if (e.target.classList.contains('btn-aceptar')) {
+        // Aceptar / rechazar desde la campana
+        campanaLista.addEventListener('click', async (e) => {
+            if (e.target.classList.contains('campana-aceptar')) {
                 await responderSolicitud(parseInt(e.target.dataset.id), 'aceptada');
-                msgExito.textContent = 'Has aceptado la solicitud.';
+                msgExito.textContent = 'Solicitud aceptada.';
                 msgExito.hidden = false;
                 await cargarSolicitudes();
                 await cargarTareasAceptadas();
             }
-            if (e.target.classList.contains('btn-rechazar')) {
+            if (e.target.classList.contains('campana-rechazar')) {
                 await responderSolicitud(parseInt(e.target.dataset.id), 'rechazada');
                 await cargarSolicitudes();
             }
