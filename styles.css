@@ -805,20 +805,136 @@ a { color: #ff6b6b; text-decoration: none; }
 a:hover { color: #ff9999; text-decoration: underline; }
 
 /* ========================================
-   RESPONSIVE
+   RESPONSIVE - TABLETS & MOVILES
    ======================================== */
+
+/* --- Tablets (768px - 1024px) --- */
+@media (max-width: 1024px) {
+  .galeria-izq, .galeria-der { width: 120px; }
+
+  main { margin: 20px 140px; padding: 22px; }
+
+  .panel-calendario { max-width: 480px; }
+
+  .formulario-cita { padding: 18px; }
+
+  table { min-width: auto; }
+}
+
+/* --- Moviles grandes (max 768px) --- */
 @media (max-width: 768px) {
-  .galeria-izq, .galeria-der { width: 100px; }
+  /* Ocultar galerías laterales en móvil */
+  .galeria-izq, .galeria-der { display: none; }
 
-  main { margin: 16px 120px 16px 120px; padding: 18px; }
+  /* Header */
+  header { padding: 18px 16px; }
+  header h1 { font-size: 1.5rem; letter-spacing: 1px; }
+  header p { font-size: 0.82rem; }
 
-  header h1 { font-size: 1.6rem; }
+  .encabezado-agenda { flex-direction: column; gap: 12px; }
 
-  .encabezado-seccion { display: block; }
+  .icono-calendario { align-self: center; }
 
-  .modos-fecha, .horas-grid { grid-template-columns: 1fr; }
+  /* Navegación */
+  .navegacion { padding: 10px 12px; gap: 8px; flex-wrap: wrap; justify-content: center; }
+  .navegacion .boton { padding: 8px 14px; font-size: 0.78rem; }
 
-  table { min-width: 600px; }
+  /* Main */
+  main { margin: 12px; padding: 16px; max-width: none; }
+
+  /* Encabezado sección */
+  .encabezado-seccion { display: block; gap: 8px; }
+  .fecha-seleccionada { margin-top: 6px; }
+
+  /* Calendario */
+  .panel-calendario { max-width: none; padding: 14px; margin-bottom: 20px; }
+  .cabecera-calendario { flex-direction: column; gap: 10px; }
+  .cabecera-calendario h3 { font-size: 1.1rem; }
+  .controles-calendario { align-self: center; }
+
+  .dias-semana span { font-size: 0.68rem; padding: 5px 0; }
+  .dia-calendario { min-height: 34px; font-size: 0.8rem; }
+
+  /* Formulario */
+  .formulario-cita { padding: 14px; }
+  .formulario-cita input:not([type="checkbox"]):not([type="hidden"]) { padding: 8px; font-size: 0.85rem; }
+
+  .modos-fecha { grid-template-columns: 1fr; gap: 8px; }
+  .horas-grid { grid-template-columns: 1fr; gap: 8px; }
+
+  /* Selector horas */
+  .selector-horas summary { padding: 8px 10px; font-size: 0.88rem; }
+  .horas-grid { padding: 10px; }
+
+  /* Tabla */
+  .tabla-contenedor { margin: 0 -16px; padding: 0 16px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  table { min-width: 520px; }
+  table th { padding: 8px 10px; font-size: 0.75rem; }
+  table td { padding: 8px 10px; font-size: 0.82rem; }
+
+  .acciones { display: flex; flex-wrap: wrap; gap: 4px; }
+  .acciones button { padding: 5px 8px !important; font-size: 0.72rem !important; }
+
+  /* Solicitudes */
+  .panel-solicitudes, .panel-compartidas { padding: 14px; margin-top: 20px; }
+  .solicitud-item { flex-direction: column; gap: 10px; padding: 12px; }
+  .solicitud-acciones { align-self: flex-end; }
+  .compartida-item { padding: 10px 12px; }
+
+  /* Modal */
+  .modal-compartir { width: 95%; max-width: none; padding: 0; }
+  .modal-contenido { padding: 18px; }
+  .lista-usuarios-check { max-height: 200px; }
+  .usuario-check { padding: 8px 10px; gap: 8px; }
+  .acciones-modal { flex-direction: column-reverse; gap: 8px; }
+  .acciones-modal .boton, .acciones-modal .boton-cerrar { width: 100%; text-align: center; }
+
+  /* Corazones menos en móvil */
+  .corazon { font-size: 0.9rem !important; }
+  .corazon:nth-child(2), .corazon:nth-child(4), .corazon:nth-child(6), .corazon:nth-child(8) { display: none; }
+}
+
+/* --- Moviles pequeños (max 480px) --- */
+@media (max-width: 480px) {
+  header h1 { font-size: 1.2rem; letter-spacing: 0.5px; }
+  header p { font-size: 0.75rem; }
+
+  .navegacion { gap: 6px; padding: 8px; }
+  .navegacion .boton { padding: 7px 10px; font-size: 0.72rem; }
+
+  main { padding: 12px; margin: 8px; }
+
+  h2 { font-size: 1.1rem; }
+  h3 { font-size: 1rem; }
+  .etiqueta-seccion { font-size: 0.65rem; }
+
+  .panel-calendario { padding: 10px; }
+  .dias-semana span { font-size: 0.62rem; letter-spacing: 0; }
+  .dia-calendario { min-height: 30px; font-size: 0.75rem; }
+  .marcador-dia { width: 6px; height: 3px; }
+
+  .formulario-cita { padding: 12px; }
+  .formulario-cita label { font-size: 0.8rem; }
+  .formulario-cita input:not([type="checkbox"]):not([type="hidden"]) { padding: 7px 8px; font-size: 0.82rem; }
+
+  .boton, button { padding: 7px 12px; font-size: 0.78rem; }
+
+  table { min-width: 460px; }
+  table th { font-size: 0.7rem; padding: 6px 8px; letter-spacing: 0; }
+  table td { font-size: 0.78rem; padding: 6px 8px; }
+
+  .acciones button { padding: 4px 6px !important; font-size: 0.68rem !important; }
+
+  .solicitud-item { padding: 10px; }
+  .solicitud-tarea { font-size: 0.9rem; }
+  .solicitud-detalle, .solicitud-fechas { font-size: 0.78rem; }
+  .solicitud-acciones .boton, .solicitud-acciones .boton-cerrar { padding: 5px 10px !important; font-size: 0.78rem !important; }
+
+  .modal-contenido { padding: 14px; }
+  .usuario-check { font-size: 0.85rem; padding: 7px 8px; }
+  .check-email { font-size: 0.72rem; }
+
+  .contador-solicitudes { min-width: 24px; height: 24px; font-size: 0.78rem; }
 }
 
 /* ========================================
