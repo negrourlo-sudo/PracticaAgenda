@@ -65,6 +65,8 @@ header p {
   background: rgba(70, 0, 0, 0.3);
   backdrop-filter: blur(6px);
   border-bottom: 1px solid rgba(255, 77, 77, 0.25);
+  position: relative;
+  z-index: 50;
 }
 
 .navegacion form { margin: 0; }
@@ -985,12 +987,12 @@ a:hover { color: #ff9999; text-decoration: underline; }
   width: 320px;
   max-height: 400px;
   overflow-y: auto;
-  background: rgba(25, 0, 0, 0.94);
+  background: rgba(25, 0, 0, 0.96);
   backdrop-filter: blur(14px);
   border: 1px solid rgba(255, 77, 77, 0.3);
   border-radius: 8px;
-  box-shadow: 0 8px 28px rgba(0,0,0,0.5);
-  z-index: 100;
+  box-shadow: 0 8px 28px rgba(0,0,0,0.6);
+  z-index: 9999;
 }
 
 .campana-titulo {

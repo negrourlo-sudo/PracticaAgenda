@@ -624,14 +624,13 @@
             campanaVacia.hidden = pendientes.length > 0;
 
             pendientes.forEach(s => {
-                const info = s.tareas_compartidas;
-                if (!info || !info.agenda) return;
-                const propietario = info.usuarios;
+                const cita = s.cita || {};
+                const prop = s.propietario || {};
                 const div = document.createElement('div');
                 div.className = 'campana-item';
                 div.innerHTML = `
-                    <p class="campana-item-tarea">${escaparHtml(info.agenda.resumen)}</p>
-                    <p class="campana-item-info">De: ${escaparHtml(propietario.nombre)}</p>
+                    <p class="campana-item-tarea">${escaparHtml(cita.resumen || 'Sin titulo')}</p>
+                    <p class="campana-item-info">De: ${escaparHtml(prop.nombre || 'Desconocido')}</p>
                     <div class="campana-item-acciones">
                         <button class="campana-aceptar" data-id="${s.id}">Aceptar</button>
                         <button class="campana-rechazar" data-id="${s.id}">Rechazar</button>
@@ -664,16 +663,15 @@
             listaCompartidasAceptadas.innerHTML = '';
 
             aceptadas.forEach(item => {
-                const info = item.tareas_compartidas;
-                if (!info || !info.agenda) return;
-                const propietario = info.usuarios;
+                const cita = item.cita || {};
+                const prop = item.propietario || {};
                 const div = document.createElement('div');
                 div.className = 'compartida-item';
                 div.innerHTML = `
                     <div class="compartida-info">
-                        <p class="compartida-tarea">${escaparHtml(info.agenda.resumen)}</p>
-                        <p class="compartida-propietario">Creada por: <strong>${escaparHtml(propietario.nombre)}</strong></p>
-                        <p class="compartida-fechas">${info.agenda.fecha_ini ? info.agenda.fecha_ini.slice(0,10) : ''} → ${info.agenda.fecha_fin ? info.agenda.fecha_fin.slice(0,10) : ''}</p>
+                        <p class="compartida-tarea">${escaparHtml(cita.resumen || 'Sin titulo')}</p>
+                        <p class="compartida-propietario">Creada por: <strong>${escaparHtml(prop.nombre || 'Desconocido')}</strong></p>
+                        <p class="compartida-fechas">${cita.fecha_ini ? cita.fecha_ini.slice(0,10) : ''} → ${cita.fecha_fin ? cita.fecha_fin.slice(0,10) : ''}</p>
                     </div>
                 `;
                 listaCompartidasAceptadas.appendChild(div);

@@ -16,7 +16,6 @@ async function listarUsuarios(usuarioActualId) {
 
 // Compartir una cita con uno o varios usuarios
 async function compartirCita(idCita, idPropietario, idsUsuarios) {
-    // 1. Crear registro en tareas_compartidas
     const { data: compartida, error: err1 } = await sb
         .from('tareas_compartidas')
         .insert([{
@@ -27,7 +26,6 @@ async function compartirCita(idCita, idPropietario, idsUsuarios) {
         .single();
     if (err1) throw err1;
 
-    // 2. Crear invitaciones para cada usuario seleccionado
     const invitaciones = idsUsuarios.map(idUsu => ({
         id_tarea_compartida: compartida.id,
         id_usuario: idUsu,
@@ -42,68 +40,68 @@ async function compartirCita(idCita, idPropietario, idsUsuarios) {
     return compartida;
 }
 
-// Obtener solicitudes pendientes de un usuario
-async function obtenerSolicitudesPendientes(usuarioId) {
-    const { data, error } = await sb
-        .from('participantes_tarea')
-        .select(`
-            id,
-            estado,
-            responded_at,
-            id_tarea_compartida,
-            tareas_compartidas (
-                id,
-                id_cita,
-                id_propietario,
-                agenda (
-                    id,
-                    resumen,
-                    fecha_ini,
-                    fecha_fin,
-                    detalle_evento
-                ),
-                usuarios: id_propietario (
-                    id,
-                    nombre
-                )
-            )
-        `)
-        .eq('id_usuario', usuarioId)
-        .order('id', { ascending: false });
-    if (error) throw error;
-    return data;
-}
-
-// Obtener todas las solicitudes (pendientes + respondidas)
+// Obtener solicitudes de un usuario (sin joins, consultas separadas)
 async function obtenerTodasSolicitudes(usuarioId) {
-    const { data, error } = await sb
+    // 1. Obtener mis participaciones
+    const { data: participaciones, error: err1 } = await sb
         .from('participantes_tarea')
-        .select(`
-            id,
-            estado,
-            responded_at,
-            id_tarea_compartida,
-            tareas_compartidas (
-                id,
-                id_cita,
-                id_propietario,
-                agenda (
-                    id,
-                    resumen,
-                    fecha_ini,
-                    fecha_fin,
-                    detalle_evento
-                ),
-                usuarios: id_propietario (
-                    id,
-                    nombre
-                )
-            )
-        `)
+        .select('id, estado, responded_at, id_tarea_compartida')
         .eq('id_usuario', usuarioId)
         .order('id', { ascending: false });
-    if (error) throw error;
-    return data;
+    if (err1) throw err1;
+    if (!participaciones || participaciones.length === 0) return [];
+
+    // 2. Obtener las tareas compartidas
+    const idsCompartidas = [...new Set(participaciones.map(p => p.id_tarea_compartida))];
+    const { data: compartidas, error: err2 } = await sb
+        .from('tareas_compartidas')
+        .select('id, id_cita, id_propietario')
+        .in('id', idsCompartidas);
+    if (err2) throw err2;
+
+    // 3. Obtener las citas (agenda)
+    const idsCitas = [...new Set(compartidas.map(c => c.id_cita))];
+    const { data: citas, error: err3 } = await sb
+        .from('agenda')
+        .select('id, resumen, fecha_ini, fecha_fin, detalle_evento')
+        .in('id', idsCitas);
+    if (err3) throw err3;
+
+    // 4. Obtener los propietarios (usuarios)
+    const idsPropietarios = [...new Set(compartidas.map(c => c.id_propietario))];
+    const { data: propietarios, error: err4 } = await sb
+        .from('usuarios')
+        .select('id, nombre')
+        .in('id', idsPropietarios);
+    if (err4) throw err4;
+
+    // 5. Combinar todo
+    const compartidasMap = {};
+    compartidas.forEach(c => { compartidasMap[c.id] = c; });
+
+    const citasMap = {};
+    citas.forEach(c => { citasMap[c.id] = c; });
+
+    const propietariosMap = {};
+    propietarios.forEach(p => { propietariosMap[p.id] = p; });
+
+    return participaciones.map(p => {
+        const comp = compartidasMap[p.id_tarea_compartida] || {};
+        const cita = citasMap[comp.id_cita] || {};
+        const prop = propietariosMap[comp.id_propietario] || {};
+        return {
+            id: p.id,
+            estado: p.estado,
+            responded_at: p.responded_at,
+            id_tarea_compartida: p.id_tarea_compartida,
+            tarea_compartida: {
+                id_cita: comp.id_cita,
+                id_propietario: comp.id_propietario
+            },
+            cita,
+            propietario: prop
+        };
+    });
 }
 
 // Responder a una solicitud (aceptar o rechazar)
@@ -118,80 +116,48 @@ async function responderSolicitud(idSolicitud, estado) {
     if (error) throw error;
 }
 
-// Obtener participantes de una tarea compartida
-async function obtenerParticipantes(idTareaCompartida) {
-    const { data, error } = await sb
-        .from('participantes_tarea')
-        .select(`
-            id,
-            estado,
-            usuarios (
-                id,
-                nombre
-            )
-        `)
-        .eq('id_tarea_compartida', idTareaCompartida);
-    if (error) throw error;
-    return data;
-}
-
-// Verificar si una cita ya está compartida por el usuario
-async function citaYaCompartida(idCita) {
-    const { data, error } = await sb
-        .from('tareas_compartidas')
-        .select('id')
-        .eq('id_cita', idCita)
-        .maybeSingle();
-    if (error) throw error;
-    return data;
-}
-
-// Obtener tareas compartidas donde el usuario es participante aceptado
+// Obtener tareas aceptadas donde el usuario participa
 async function obtenerTareasAceptadas(usuarioId) {
-    const { data, error } = await sb
+    const { data: participaciones, error: err1 } = await sb
         .from('participantes_tarea')
-        .select(`
-            id,
-            id_tarea_compartida,
-            tareas_compartidas (
-                id,
-                id_cita,
-                id_propietario,
-                agenda (
-                    id,
-                    resumen,
-                    fecha_ini,
-                    fecha_fin,
-                    detalle_evento,
-                    notas,
-                    terminado
-                ),
-                usuarios: id_propietario (
-                    id,
-                    nombre
-                )
-            )
-        `)
+        .select('id, id_tarea_compartida')
         .eq('id_usuario', usuarioId)
         .eq('estado', 'aceptada');
-    if (error) throw error;
-    return data;
-}
+    if (err1) throw err1;
+    if (!participaciones || participaciones.length === 0) return [];
 
-// Eliminar una tarea compartida (el propietario puede eliminar la invitación)
-async function eliminarTareaCompartida(idTareaCompartida) {
-    const { error } = await sb
+    const idsCompartidas = [...new Set(participaciones.map(p => p.id_tarea_compartida))];
+    const { data: compartidas, error: err2 } = await sb
         .from('tareas_compartidas')
-        .delete()
-        .eq('id', idTareaCompartida);
-    if (error) throw error;
-}
+        .select('id, id_cita, id_propietario')
+        .in('id', idsCompartidas);
+    if (err2) throw err2;
 
-// Eliminar invitación individual
-async function eliminarInvitacion(idInvitacion) {
-    const { error } = await sb
-        .from('participantes_tarea')
-        .delete()
-        .eq('id', idInvitacion);
-    if (error) throw error;
+    const idsCitas = [...new Set(compartidas.map(c => c.id_cita))];
+    const { data: citas, error: err3 } = await sb
+        .from('agenda')
+        .select('id, resumen, fecha_ini, fecha_fin, detalle_evento, notas, terminado')
+        .in('id', idsCitas);
+    if (err3) throw err3;
+
+    const idsPropietarios = [...new Set(compartidas.map(c => c.id_propietario))];
+    const { data: propietarios, error: err4 } = await sb
+        .from('usuarios')
+        .select('id, nombre')
+        .in('id', idsPropietarios);
+    if (err4) throw err4;
+
+    const compartidasMap = {};
+    compartidas.forEach(c => { compartidasMap[c.id] = c; });
+    const citasMap = {};
+    citas.forEach(c => { citasMap[c.id] = c; });
+    const propietariosMap = {};
+    propietarios.forEach(p => { propietariosMap[p.id] = p; });
+
+    return participaciones.map(p => {
+        const comp = compartidasMap[p.id_tarea_compartida] || {};
+        const cita = citasMap[comp.id_cita] || {};
+        const prop = propietariosMap[comp.id_propietario] || {};
+        return { cita, propietario: prop };
+    });
 }
