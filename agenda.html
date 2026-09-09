@@ -229,11 +229,14 @@
 
             usuarioActual = await getUsuarioActual();
             if (!usuarioActual) { window.location.href = 'index.html'; return; }
+            console.log('[INIT] Usuario actual:', usuarioActual);
 
             nombreUsuario.textContent = `HOLA SUPERCALIENTE, ${usuarioActual.nombre}`;
             diaActual.textContent = new Date().getDate();
             await cargarCitas();
             seleccionarFecha(fechaHoy);
+            await cargarSolicitudes();
+            await cargarTareasAceptadas();
         })();
 
         // Cargar citas
@@ -677,12 +680,6 @@
                 listaCompartidasAceptadas.appendChild(div);
             });
         }
-
-        // Cargar todo al inicio
-        (async () => {
-            await cargarSolicitudes();
-            await cargarTareasAceptadas();
-        })();
     </script>
 </body>
 </html>

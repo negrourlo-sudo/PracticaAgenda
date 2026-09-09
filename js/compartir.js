@@ -42,13 +42,16 @@ async function compartirCita(idCita, idPropietario, idsUsuarios) {
 
 // Obtener solicitudes de un usuario (sin joins, consultas separadas)
 async function obtenerTodasSolicitudes(usuarioId) {
+    console.log('[COMPARTIR] Buscando solicitudes para usuario:', usuarioId, typeof usuarioId);
+
     // 1. Obtener mis participaciones
     const { data: participaciones, error: err1 } = await sb
         .from('participantes_tarea')
         .select('id, estado, responded_at, id_tarea_compartida')
         .eq('id_usuario', usuarioId)
         .order('id', { ascending: false });
-    if (err1) throw err1;
+    if (err1) { console.error('[COMPARTIR] Error participaciones:', err1); throw err1; }
+    console.log('[COMPARTIR] Participaciones encontradas:', participaciones);
     if (!participaciones || participaciones.length === 0) return [];
 
     // 2. Obtener las tareas compartidas
