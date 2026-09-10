@@ -894,6 +894,17 @@ a:hover { color: #ff9999; text-decoration: underline; }
   /* Corazones menos en móvil */
   .corazon { font-size: 0.9rem !important; }
   .corazon:nth-child(2), .corazon:nth-child(4), .corazon:nth-child(6), .corazon:nth-child(8) { display: none; }
+
+  /* Campana dropdown móvil */
+  .campana-dropdown {
+    position: fixed;
+    top: auto;
+    left: 8px;
+    right: 8px;
+    width: auto;
+    max-height: 50vh;
+    border-radius: 10px;
+  }
 }
 
 /* --- Moviles pequeños (max 480px) --- */
@@ -937,6 +948,17 @@ a:hover { color: #ff9999; text-decoration: underline; }
   .check-email { font-size: 0.72rem; }
 
   .contador-solicitudes { min-width: 24px; height: 24px; font-size: 0.78rem; }
+
+  .campana-dropdown {
+    left: 4px;
+    right: 4px;
+    max-height: 45vh;
+  }
+
+  .campana-item { padding: 10px; }
+  .campana-item-tarea { font-size: 0.85rem; }
+  .campana-item-info { font-size: 0.72rem; }
+  .campana-aceptar, .campana-rechazar { padding: 5px 10px !important; font-size: 0.75rem !important; }
 }
 
 /* ========================================
