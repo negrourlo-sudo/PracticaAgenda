@@ -1,0 +1,17 @@
+# Robots.txt - Agenda Personal
+# https://negrourlo-sudo.github.io/PracticaAgenda/
+
+User-agent: *
+Allow: /
+Allow: /registro.html
+Disallow: /agenda.html
+Disallow: /js/
+Disallow: /sql/
+Disallow: /imagenes/
+
+# Sitemap
+Sitemap: https://negrourlo-sudo.github.io/PracticaAgenda/sitemap.xml
+
+# Crawl-delay
+User-agent: *
+Crawl-delay: 1

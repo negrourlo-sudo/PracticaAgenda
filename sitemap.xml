@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
+  <!-- Página principal (Login) -->
+  <url>
+    <loc>https://negrourlo-sudo.github.io/PracticaAgenda/</loc>
+    <lastmod>2026-09-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://negrourlo-sudo.github.io/PracticaAgenda/" />
+  </url>
+
+  <!-- Registro -->
+  <url>
+    <loc>https://negrourlo-sudo.github.io/PracticaAgenda/registro.html</loc>
+    <lastmod>2026-09-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://negrourlo-sudo.github.io/PracticaAgenda/registro.html" />
+  </url>
+
+</urlset>
