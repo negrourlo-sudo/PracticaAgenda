@@ -899,11 +899,12 @@ a:hover { color: #ff9999; text-decoration: underline; }
   .campana-dropdown {
     position: fixed;
     top: auto;
-    left: 8px;
-    right: 8px;
-    width: auto;
-    max-height: 50vh;
-    border-radius: 10px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    max-height: 55vh;
+    border-radius: 10px 10px 0 0;
   }
 }
 
@@ -950,9 +951,10 @@ a:hover { color: #ff9999; text-decoration: underline; }
   .contador-solicitudes { min-width: 24px; height: 24px; font-size: 0.78rem; }
 
   .campana-dropdown {
-    left: 4px;
-    right: 4px;
-    max-height: 45vh;
+    left: 0;
+    right: 0;
+    width: 100%;
+    max-height: 50vh;
   }
 
   .campana-item { padding: 10px; }
