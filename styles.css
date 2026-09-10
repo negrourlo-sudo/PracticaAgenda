@@ -897,13 +897,15 @@ a:hover { color: #ff9999; text-decoration: underline; }
 
   /* Campana dropdown móvil */
   .campana-dropdown {
-    position: fixed;
-    top: auto;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    width: 100%;
-    margin-left: 0;
+    position: fixed !important;
+    bottom: 0 !important;
+    top: auto !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    margin-left: 0 !important;
+    margin-top: 0 !important;
+    min-height: 80px;
     max-height: 55vh;
     border-radius: 10px 10px 0 0;
   }
@@ -952,9 +954,10 @@ a:hover { color: #ff9999; text-decoration: underline; }
   .contador-solicitudes { min-width: 24px; height: 24px; font-size: 0.78rem; }
 
   .campana-dropdown {
-    width: 100%;
+    width: 100% !important;
+    margin-left: 0 !important;
     max-height: 50vh;
-    margin-left: 0;
+    min-height: 80px;
   }
 
   .campana-item { padding: 10px; }
@@ -968,7 +971,6 @@ a:hover { color: #ff9999; text-decoration: underline; }
    ======================================== */
 .campana-contenedor {
   position: relative;
-  display: inline-block;
 }
 
 .campana-btn {
@@ -1007,10 +1009,12 @@ a:hover { color: #ff9999; text-decoration: underline; }
 
 .campana-dropdown {
   position: absolute;
-  top: calc(100% + 10px);
+  top: 100%;
   left: 50%;
   margin-left: -160px;
+  margin-top: 8px;
   width: 320px;
+  min-height: 60px;
   max-height: 400px;
   overflow-y: auto;
   background: rgba(25, 0, 0, 0.96);
@@ -1020,6 +1024,10 @@ a:hover { color: #ff9999; text-decoration: underline; }
   box-shadow: 0 8px 28px rgba(0,0,0,0.6);
   z-index: 9999;
 }
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
 
 .campana-titulo {
   padding: 12px 14px 8px;

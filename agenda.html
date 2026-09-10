@@ -540,6 +540,7 @@
             e.stopPropagation();
             const visible = campanaDropdown.style.display === 'block';
             campanaDropdown.style.display = visible ? 'none' : 'block';
+            console.log('[CAMPANA] Dropdown visible:', !visible);
         });
 
         // Cerrar dropdown al hacer clic fuera
