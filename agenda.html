@@ -34,7 +34,7 @@
                 🔔
                 <span class="campana-badge" id="campana-badge" hidden>0</span>
             </button>
-            <div class="campana-dropdown" id="campana-dropdown" hidden>
+            <div class="campana-dropdown" id="campana-dropdown" style="display:none">
                 <p class="campana-titulo">Solicitudes recibidas</p>
                 <div id="campana-lista"></div>
                 <p class="campana-vacia" id="campana-vacia">No hay solicitudes pendientes.</p>
@@ -538,14 +538,14 @@
         // Abrir/cerrar dropdown de la campana
         campanaBtn.addEventListener('click', (e) => {
             e.stopPropagation();
-            const abierto = !campanaDropdown.hidden;
-            campanaDropdown.hidden = abierto;
+            const visible = campanaDropdown.style.display === 'block';
+            campanaDropdown.style.display = visible ? 'none' : 'block';
         });
 
         // Cerrar dropdown al hacer clic fuera
         document.addEventListener('click', (e) => {
-            if (!campanaDropdown.contains(e.target) && e.target !== campanaBtn) {
-                campanaDropdown.hidden = true;
+            if (!campanaDropdown.contains(e.target) && e.target !== campanaBtn && !campanaBtn.contains(e.target)) {
+                campanaDropdown.style.display = 'none';
             }
         });
 
