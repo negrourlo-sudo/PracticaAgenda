@@ -900,9 +900,10 @@ a:hover { color: #ff9999; text-decoration: underline; }
     position: fixed;
     top: auto;
     bottom: 0;
-    left: 0;
-    right: 0;
-    width: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 92%;
+    max-width: 360px;
     max-height: 55vh;
     border-radius: 10px 10px 0 0;
   }
@@ -951,9 +952,8 @@ a:hover { color: #ff9999; text-decoration: underline; }
   .contador-solicitudes { min-width: 24px; height: 24px; font-size: 0.78rem; }
 
   .campana-dropdown {
-    left: 0;
-    right: 0;
-    width: 100%;
+    width: 94%;
+    max-width: 320px;
     max-height: 50vh;
   }
 
@@ -968,6 +968,8 @@ a:hover { color: #ff9999; text-decoration: underline; }
    ======================================== */
 .campana-contenedor {
   position: relative;
+  display: flex;
+  align-items: center;
 }
 
 .campana-btn {
@@ -1006,8 +1008,9 @@ a:hover { color: #ff9999; text-decoration: underline; }
 
 .campana-dropdown {
   position: absolute;
-  top: calc(100% + 8px);
-  right: 0;
+  top: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%);
   width: 320px;
   max-height: 400px;
   overflow-y: auto;
