@@ -23,8 +23,7 @@ body {
    HEADER
    ======================================== */
 header {
-  background: rgba(100, 0, 0, 0.4);
-  backdrop-filter: blur(8px);
+  background: rgba(100, 0, 0, 0.65);
   color: #fff;
   padding: 28px 24px;
   text-align: center;
@@ -62,8 +61,7 @@ header p {
   align-items: center;
   gap: 14px;
   padding: 12px 20px;
-  background: rgba(70, 0, 0, 0.3);
-  backdrop-filter: blur(6px);
+  background: rgba(70, 0, 0, 0.5);
   border-bottom: 1px solid rgba(255, 77, 77, 0.25);
   position: relative;
   z-index: 50;
@@ -127,8 +125,7 @@ main {
   max-width: 900px;
   margin: 28px auto;
   padding: 28px;
-  background: rgba(50, 0, 0, 0.3);
-  backdrop-filter: blur(10px);
+  background: rgba(50, 0, 0, 0.55);
   border: 1px solid rgba(255, 77, 77, 0.25);
   border-radius: 10px;
 }
@@ -180,7 +177,6 @@ h3::before { content: "♥ "; }
   margin-bottom: 28px;
   padding: 20px 22px 16px;
   background: rgba(60, 0, 0, 0.25) !important;
-  backdrop-filter: blur(6px);
   border: 1px solid rgba(255, 77, 77, 0.25) !important;
   border-radius: 8px;
 }
@@ -333,7 +329,6 @@ h3::before { content: "♥ "; }
   margin: 0 0 28px;
   padding: 22px;
   background: rgba(50, 0, 0, 0.3) !important;
-  backdrop-filter: blur(6px);
   border: 0 !important;
   border-top: 3px solid rgba(255, 77, 77, 0.45) !important;
   border-radius: 6px;
@@ -532,7 +527,6 @@ table {
   width: 100%;
   border-collapse: collapse;
   background: rgba(40, 0, 0, 0.25) !important;
-  backdrop-filter: blur(4px);
   border: 1px solid rgba(255, 77, 77, 0.25) !important;
   border-radius: 6px;
   overflow: hidden;
@@ -658,7 +652,6 @@ table tr:last-child td { border-bottom: 0; }
   padding: 28px;
   border-top: 3px solid rgba(255, 77, 77, 0.45);
   background: rgba(40, 0, 0, 0.3);
-  backdrop-filter: blur(10px);
 }
 
 .acciones-login {
@@ -752,6 +745,7 @@ table tr:last-child td { border-bottom: 0; }
   background-position: center;
   opacity: 0;
   transition: opacity 2s ease-in-out;
+  will-change: opacity;
 }
 
 .galeria-izq .foto.visible,
@@ -766,12 +760,12 @@ table tr:last-child td { border-bottom: 0; }
 .galeria-der .foto:nth-child(3) { background-image: url('imagenes/2.jpg'); }
 
 /* ========================================
-   CORAZONES FLOTANTES
+   CORAZONES FLOTANTES (optimizado)
    ======================================== */
 @keyframes flotar {
   0% { transform: translateY(100vh); opacity: 0; }
-  10% { opacity: 0.35; }
-  90% { opacity: 0.35; }
+  10% { opacity: 0.2; }
+  90% { opacity: 0.2; }
   100% { transform: translateY(-10vh); opacity: 0; }
 }
 
@@ -782,23 +776,20 @@ table tr:last-child td { border-bottom: 0; }
   pointer-events: none;
   z-index: 0;
   overflow: hidden;
+  will-change: transform;
 }
 
 .corazon {
   position: absolute;
   bottom: -30px;
-  color: rgba(255, 100, 100, 0.2);
+  color: rgba(255, 100, 100, 0.15);
   animation: flotar linear infinite;
 }
 
-.corazon:nth-child(1) { left: 10%; animation-duration: 16s; animation-delay: 0s; font-size: 1.2rem; }
-.corazon:nth-child(2) { left: 25%; animation-duration: 20s; animation-delay: 2s; font-size: 1.7rem; }
-.corazon:nth-child(3) { left: 42%; animation-duration: 18s; animation-delay: 5s; font-size: 1rem; }
-.corazon:nth-child(4) { left: 60%; animation-duration: 22s; animation-delay: 1s; font-size: 1.4rem; }
-.corazon:nth-child(5) { left: 77%; animation-duration: 17s; animation-delay: 7s; font-size: 1.2rem; }
-.corazon:nth-child(6) { left: 90%; animation-duration: 21s; animation-delay: 4s; font-size: 1rem; }
-.corazon:nth-child(7) { left: 37%; animation-duration: 19s; animation-delay: 9s; font-size: 1.5rem; }
-.corazon:nth-child(8) { left: 70%; animation-duration: 23s; animation-delay: 6s; font-size: 1.3rem; }
+.corazon:nth-child(1) { left: 10%; animation-duration: 20s; animation-delay: 0s; font-size: 1.1rem; }
+.corazon:nth-child(2) { left: 30%; animation-duration: 25s; animation-delay: 3s; font-size: 1.5rem; }
+.corazon:nth-child(3) { left: 55%; animation-duration: 22s; animation-delay: 6s; font-size: 0.9rem; }
+.corazon:nth-child(4) { left: 80%; animation-duration: 28s; animation-delay: 2s; font-size: 1.2rem; }
 
 /* ========================================
    ENLACES
@@ -1018,7 +1009,6 @@ a:hover { color: #ff9999; text-decoration: underline; }
   max-height: 400px;
   overflow-y: auto;
   background: rgba(25, 0, 0, 0.96);
-  backdrop-filter: blur(14px);
   border: 1px solid rgba(255, 77, 77, 0.3);
   border-radius: 8px;
   box-shadow: 0 8px 28px rgba(0,0,0,0.6);
@@ -1109,7 +1099,6 @@ a:hover { color: #ff9999; text-decoration: underline; }
   margin-top: 28px;
   padding: 22px;
   background: rgba(50, 0, 0, 0.3) !important;
-  backdrop-filter: blur(8px);
   border: 1px solid rgba(255, 77, 77, 0.25) !important;
   border-radius: 10px;
 }
@@ -1213,7 +1202,6 @@ a:hover { color: #ff9999; text-decoration: underline; }
   margin-top: 22px;
   padding: 22px;
   background: rgba(50, 0, 0, 0.28) !important;
-  backdrop-filter: blur(8px);
   border: 1px solid rgba(255, 77, 77, 0.22) !important;
   border-radius: 10px;
 }
@@ -1252,7 +1240,6 @@ a:hover { color: #ff9999; text-decoration: underline; }
   border: 1px solid rgba(255, 77, 77, 0.35);
   border-radius: 10px;
   background: rgba(30, 0, 0, 0.92);
-  backdrop-filter: blur(12px);
   color: #ffe0e0;
   padding: 0;
   max-width: 480px;

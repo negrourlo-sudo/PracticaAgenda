@@ -67,9 +67,8 @@
 </head>
 <body class="pagina-login">
   <div class="corazones-flotantes">
-    <span class="corazon">❤</span><span class="corazon">💕</span><span class="corazon">💖</span>
-    <span class="corazon">💝</span><span class="corazon">💗</span><span class="corazon">❤</span>
-    <span class="corazon">💕</span><span class="corazon">💖</span>
+    <span class="corazon">❤</span><span class="corazon">💕</span>
+    <span class="corazon">💖</span><span class="corazon">❤</span>
   </div>
   <div class="galeria-izq"><div class="foto visible"></div><div class="foto"></div><div class="foto"></div></div>
   <div class="galeria-der"><div class="foto visible"></div><div class="foto"></div><div class="foto"></div></div>
@@ -110,7 +109,7 @@
         fotos[actual].classList.remove('visible');
         actual = (actual + 1) % fotos.length;
         fotos[actual].classList.add('visible');
-      }, 4000);
+      }, 6000);
     }
     iniciarGaleria('.galeria-izq');
     iniciarGaleria('.galeria-der');
